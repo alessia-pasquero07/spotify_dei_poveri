@@ -1,0 +1,196 @@
+/* Stili globali per la pagina */
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Un font più simile a Spotify */
+}
+
+/* Sidebar */
+#sidebar-wrapper {
+    background-color: #000000 !important; /* Nero profondo per la sidebar */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Ombra leggera */
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 1.5rem 1rem; /* Spazio interno per il titolo della sidebar */
+}
+
+#sidebar-wrapper .list-group-item {
+    padding-left: 1.5rem; /* Allinea leggermente i link */
+    transition: background-color 0.2s ease; /* Transizione fluida al passaggio del mouse */
+    color: #b3b3b3 !important; /* Colore testo default */
+}
+
+#sidebar-wrapper .list-group-item:hover {
+    background-color: #282828 !important; /* Grigio più scuro al hover */
+    color: #ffffff !important; /* Testo bianco al hover */
+}
+
+#sidebar-wrapper .list-group-item.active {
+    background-color: #282828 !important; /* Colore per l'elemento attivo */
+    color: #ffffff !important; /* Testo bianco per l'elemento attivo */
+    font-weight: bold; /* Grassetto per l'elemento attivo */
+    border-left: 3px solid #1ED760 !important; /* Linea verde a sinistra per l'attivo */
+    padding-left: calc(1.5rem - 3px); /* Compensiamo la larghezza del bordo */
+}
+
+/* Navbar superiore */
+.navbar {
+    background-color: #0c0c0c !important; /* Nero molto scuro per la navbar */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Ombra per distinguere */
+    z-index: 1020; /* Assicura che la navbar sia sopra il contenuto quando scorri */
+}
+
+.navbar .btn-secondary {
+    background-color: #282828; /* Grigio più scuro per i bottoni Indietro/Avanti */
+    border-color: #282828;
+    color: #ffffff;
+}
+
+.navbar .btn-secondary:hover {
+    background-color: #383838;
+    border-color: #383838;
+}
+
+.navbar .btn-light {
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: bold;
+}
+
+.navbar .btn-light:hover {
+    background-color: #e0e0e0;
+}
+
+/* Contenuto principale della pagina (Home, Cerca, ecc.) */
+#page-content-wrapper {
+    background: linear-gradient(to bottom, #1a1a1a 0%, #121212 100%) !important; /* Sfumatura dal grigio scuro al nero */
+    padding-bottom: 90px; /* Spazio per il player fisso in fondo */
+}
+
+/* Stili per le Card */
+.card {
+    border-radius: 8px; /* Bordi arrotondati per tutte le card */
+    overflow: hidden; /* Nasconde ciò che esce dai bordi arrotondati */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Animazione al hover */
+    cursor: pointer;
+}
+
+.card:hover {
+    background-color: #282828 !important; /* Scurisce la card al hover */
+    transform: translateY(-5px); /* Leggero sollevamento al hover */
+}
+
+.card.bg-secondary { /* Card "Mix" */
+    background-color: #282828 !important; /* Colore di sfondo per i mix */
+}
+
+.card.bg-dark { /* Card "Album/Artista/Podcast" */
+    background-color: #181818 !important; /* Colore di sfondo per album/artista/podcast */
+}
+
+.card-img-top {
+    border-radius: 4px; /* Bordi leggermente arrotondati per le immagini delle card */
+}
+
+/* Specifico per le immagini circolari degli artisti */
+.card img.rounded-circle {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Ombra più pronunciata per gli artisti */
+}
+
+/* Card di categoria nella pagina Cerca */
+.search-category-card {
+    border-radius: 8px;
+    height: 120px;
+    display: flex; /* Usa flexbox per allineare il testo */
+    align-items: flex-end; /* Allinea il testo in basso */
+    padding: 1rem !important; /* Più spazio interno */
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Ombra */
+}
+
+.search-category-card h5 {
+    margin-bottom: 0; /* Rimuove il margine inferiore del titolo */
+    font-size: 1.25rem; /* Aumenta un po' la dimensione del font */
+}
+
+
+/* Player Musicale in fondo */
+.player-bar {
+    background-color: #181818 !important; /* Grigio scuro per il player */
+    border-color: #000000 !important; /* Bordo nero per distinguere */
+    padding: 0.75rem 1.5rem !important; /* Padding maggiore */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1030; /* Assicura che sia sopra tutto */
+}
+
+.player-bar img {
+    border-radius: 4px; /* Bordi leggermente arrotondati per la copertina del brano */
+}
+
+.player-controls .btn-link {
+    color: #b3b3b3 !important; /* Colore icone dei controlli */
+}
+
+.player-controls .btn-link:hover {
+    color: #ffffff !important; /* Bianco al hover */
+}
+
+.player-controls .btn-light {
+    background-color: #ffffff !important; /* Bottone play/pausa bianco */
+    border-color: #ffffff !important;
+    color: #000000 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px; /* Dimensioni fisse per il cerchio */
+    height: 45px;
+    font-size: 1.8rem !important; /* Icona più grande */
+    line-height: 1; /* Allineamento verticale */
+    padding: 0; /* Rimuovi padding interno del bottone */
+}
+
+.player-controls .btn-light:hover {
+    transform: scale(1.05); /* Effetto leggero di ingrandimento */
+}
+
+.progress {
+    background-color: #535353 !important; /* Colore grigio per la barra di progresso vuota */
+    border-radius: 5px; /* Bordi arrotondati */
+}
+
+.progress-bar.bg-success {
+    background-color: #1ED760 !important; /* Verde brillante di Spotify per la barra di progresso piena */
+}
+
+/* Media Queries per la Responsività (esempi) */
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        width: 100% !important;
+        min-height: auto !important;
+        position: relative; /* Non più fisso a sinistra su schermi piccoli */
+        box-shadow: none;
+    }
+    .player-bar {
+        flex-wrap: wrap; /* Permette al player di andare a capo */
+        justify-content: center; /* Centra gli elementi */
+        padding: 0.5rem;
+    }
+    .player-controls {
+        margin-top: 0.5rem;
+        width: 100%; /* I controlli prendono tutta la larghezza */
+        justify-content: center;
+    }
+    .volume-bar {
+        display: none; /* Nasconde la barra del volume su schermi molto piccoli */
+    }
+    /* Adatta il numero di colonne per le card su schermi più piccoli */
+    .row.row-cols-xl-7 > .col {
+        flex: 0 0 auto;
+        width: 33.333333%; /* 3 colonne per default */
+    }
+    .row.row-cols-md-3 > .col {
+        flex: 0 0 auto;
+        width: 50%; /* 2 colonne per default */
+    }
+}
