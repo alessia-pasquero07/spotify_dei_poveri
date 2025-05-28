@@ -197,4 +197,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // correttamente nella cronologia (tramite updateNavigationHistory).
     // `false` indica che questa non è una navigazione tramite i bottoni Indietro/Avanti.
     window.showSection('home-section', false);
+const audioPlayer = document.getElementById('audio-player'); 
+    audioPlayer.addEventListener('timeupdate', function() {
+    const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    if (!isNaN(progress)) {
+        progressBar.style.width = progress + '%';
+    }
+});
 });
