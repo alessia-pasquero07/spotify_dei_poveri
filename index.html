@@ -19,6 +19,8 @@
     <script src="js/AvantiIndietro.js"></script>
     <script src="js/musica.js"></script>
     <script src="js/artista.js"></script>
+    <script src="js/ricerca.js"></script>
+    <script src="js/dati.js"></script>
 </head>
 
 <body class="bg-dark text-white">
@@ -64,7 +66,7 @@
                     <button class="btn btn-secondary rounded-pill me-2 disabled" id="back-button">Indietro</button>
                     <button class="btn btn-secondary rounded-pill disabled" id="forward-button">Avanti</button>
                     <div class="ms-auto d-flex align-items-center">
-                        <button class="btn btn-light rounded-pill me-2">ACCEDI</button>
+                        <a class="btn btn-light rounded-pill me-2" href="log.html">ACCEDI</a>
                         <div class="dropdown">
                             <a class="btn btn-secondary rounded-pill dropdown-toggle" href="#" role="button"
                                 id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -88,61 +90,65 @@
                 <h2 class="mb-3">I tuoi mix più amati</h2>
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 mb-5">
                     <div class="col">
-                        <div class="card bg-secondary text-white border-0 h-100">
+                        <a class="card bg-secondary text-white border-0 h-100 genre-mix-card"
+                            style="text-decoration: none;" data-genre="Pop">
                             <div class="card-body d-flex align-items-center">
                                 <img src="img/pop.jfif" class="rounded me-3" alt="Mix Cover"
                                     style="width: 60px; height: 60px; object-fit: cover;">
                                 <h5 class="card-title mb-0">Mix Pop</h5>
                             </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col">
-                        <div class="card bg-secondary text-white border-0 h-100">
+                        <a class="card bg-secondary text-white border-0 h-100 genre-mix-card"
+                            style="text-decoration: none;" data-genre="Rock">
                             <div class="card-body d-flex align-items-center">
                                 <img src="img/rock.jfif" class="rounded me-3" alt="Mix Cover"
                                     style="width: 60px; height: 60px; object-fit: cover;">
                                 <h5 class="card-title mb-0">Mix Rock</h5>
                             </div>
+                        </a>
+                    </div>
+                    <div class="col">
+                        <div class="col"> <a class="card bg-secondary text-white border-0 h-100 genre-mix-card"
+                                style="text-decoration: none;" data-genre="Trap">
+                                <div class="card-body d-flex align-items-center">
+                                    <img src="img/mix trap.jfif" class="rounded me-3" alt="Mix Cover"
+                                        style="width: 60px; height: 60px; object-fit: cover;">
+                                    <h5 class="card-title mb-0">Mix Trap</h5>
+                                </div>
+                            </a>
                         </div>
                     </div>
                     <div class="col">
-                       <div class="col">
-    <a class="card bg-secondary text-white border-0 h-100 genre-mix-card"
-       style="text-decoration: none;"
-       data-genre="Trap"> <div class="card-body d-flex align-items-center">
-            <img src="img/mix trap.jfif" class="rounded me-3" alt="Mix Cover"
-                style="width: 60px; height: 60px; object-fit: cover;">
-            <h5 class="card-title mb-0">Mix Trap</h5>
-        </div>
-    </a>
-</div>
-                    </div>
-                    <div class="col">
-                        <div class="card bg-secondary text-white border-0 h-100">
+                        <a class="card bg-secondary text-white border-0 h-100 genre-mix-card"
+                            style="text-decoration: none;" data-genre="Elettronica">
                             <div class="card-body d-flex align-items-center">
                                 <img src="img/elettronica.jfif" class="rounded me-3" alt="Mix Cover"
                                     style="width: 60px; height: 60px; object-fit: cover;">
                                 <h5 class="card-title mb-0">Mix Elettronica</h5>
                             </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col">
-                        <div class="card bg-secondary text-white border-0 h-100">
+                        <a class="card bg-secondary text-white border-0 h-100 genre-mix-card"
+                            style="text-decoration: none;" data-genre="Jazz">
                             <div class="card-body d-flex align-items-center">
                                 <img src="img/jazz.jfif" class="rounded me-3"
                                     style="width: 60px; height: 60px; object-fit: cover;" alt="Mix Cover">
                                 <h5 class="card-title mb-0">Mix Jazz</h5>
                             </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col">
-                        <div class="card bg-secondary text-white border-0 h-100">
+                        <a class="card bg-secondary text-white border-0 h-100 genre-mix-card"
+                            style="text-decoration: none;" data-genre="Classica">
                             <div class="card-body d-flex align-items-center">
                                 <img src="img/classica.jfif" class="rounded me-3" alt="Mix Cover"
                                     style="width: 60px; height: 60px; object-fit: cover;">
                                 <h5 class="card-title mb-0">Mix Classica</h5>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
 
@@ -208,8 +214,8 @@
                 <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 row-cols-xl-7 g-4 mb-5 text-center">
                     <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
-                            <img src="img/bach.jfif" class="rounded-circle p-2 mx-auto d-block"
-                                alt="Artista 1" style="width:120px; height:120px; object-fit: cover;">
+                            <img src="img/bach.jfif" class="rounded-circle p-2 mx-auto d-block" alt="Artista 1"
+                                style="width:120px; height:120px; object-fit: cover;">
                             <div class="card-body p-2">
                                 <h5 class="card-title mb-0 fs-6">Johann Sebastian Bach</h5>
                                 <p class="card-text text-muted fs-6">Artista</p>
@@ -218,8 +224,8 @@
                     </div>
                     <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
-                            <img src="img/beethoven.jfif" class="rounded-circle p-2 mx-auto d-block"
-                                alt="Artista 2" style="width:120px; height:120px; object-fit: cover;">
+                            <img src="img/beethoven.jfif" class="rounded-circle p-2 mx-auto d-block" alt="Artista 2"
+                                style="width:120px; height:120px; object-fit: cover;">
                             <div class="card-body p-2">
                                 <h5 class="card-title mb-0 fs-6">Ludwig van Beethoven</h5>
                                 <p class="card-text text-muted fs-6">Artista</p>
@@ -228,8 +234,8 @@
                     </div>
                     <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
-                            <img src="img/billie elish.jfif" class="rounded-circle p-2 mx-auto d-block"
-                                alt="Artista 3" style="width:120px; height:120px; object-fit: cover;">
+                            <img src="img/billie elish.jfif" class="rounded-circle p-2 mx-auto d-block" alt="Artista 3"
+                                style="width:120px; height:120px; object-fit: cover;">
                             <div class="card-body p-2">
                                 <h5 class="card-title mb-0 fs-6">Billie Eilish</h5>
                                 <p class="card-text text-muted fs-6">Artista</p>
@@ -238,8 +244,8 @@
                     </div>
                     <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
-                            <img src="img/mozart.jfif" class="rounded-circle p-2 mx-auto d-block"
-                                alt="Artista 4" style="width:120px; height:120px; object-fit: cover;">
+                            <img src="img/mozart.jfif" class="rounded-circle p-2 mx-auto d-block" alt="Artista 4"
+                                style="width:120px; height:120px; object-fit: cover;">
                             <div class="card-body p-2">
                                 <h5 class="card-title mb-0 fs-6">Wolfgang Amadeus Mozart</h5>
                                 <p class="card-text text-muted fs-6">Artista</p>
@@ -248,8 +254,8 @@
                     </div>
                     <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
-                            <img src="img/rihanna.jfif" class="rounded-circle p-2 mx-auto d-block"
-                                alt="Artista 5" style="width:120px; height:120px; object-fit: cover;">
+                            <img src="img/rihanna.jfif" class="rounded-circle p-2 mx-auto d-block" alt="Artista 5"
+                                style="width:120px; height:120px; object-fit: cover;">
                             <div class="card-body p-2">
                                 <h5 class="card-title mb-0 fs-6">Rihanna</h5>
                                 <p class="card-text text-muted fs-6">Artista</p>
@@ -258,8 +264,8 @@
                     </div>
                     <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
-                            <img src="img/dua lipa.jfif" class="rounded-circle p-2 mx-auto d-block"
-                                alt="Artista 6" style="width:120px; height:120px; object-fit: cover;">
+                            <img src="img/dua lipa.jfif" class="rounded-circle p-2 mx-auto d-block" alt="Artista 6"
+                                style="width:120px; height:120px; object-fit: cover;">
                             <div class="card-body p-2">
                                 <h5 class="card-title mb-0 fs-6">Dua Lipa</h5>
                                 <p class="card-text text-muted fs-6">Artista</p>
@@ -278,8 +284,8 @@
                     </div>
                     <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
-                            <img src="img/tony.jfif " class="rounded-circle p-2 mx-auto d-block"
-                                alt="Artista 8" style="width:120px; height:120px; object-fit: cover;">
+                            <img src="img/tony.jfif " class="rounded-circle p-2 mx-auto d-block" alt="Artista 8"
+                                style="width:120px; height:120px; object-fit: cover;">
                             <div class="card-body p-2">
                                 <h5 class="card-title mb-0 fs-6">Tony Effe</h5>
                                 <p class="card-text text-muted fs-6">Artista</p>
@@ -288,8 +294,8 @@
                     </div>
                     <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
-                            <img src="img/sfera.jfif" class="rounded-circle p-2 mx-auto d-block"
-                                alt="Artista 9" style="width:120px; height:120px; object-fit: cover;">
+                            <img src="img/sfera.jfif" class="rounded-circle p-2 mx-auto d-block" alt="Artista 9"
+                                style="width:120px; height:120px; object-fit: cover;">
                             <div class="card-body p-2">
                                 <h5 class="card-title mb-0 fs-6">Sfera Ebbasta</h5>
                                 <p class="card-text text-muted fs-6">Artista</p>
@@ -298,35 +304,35 @@
                     </div>
                     <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
-                            <img src="img/capo.jfif" class="rounded-circle p-2 mx-auto d-block"
-                                alt="Artista 10" style="width:120px; height:120px; object-fit: cover;">
+                            <img src="img/capo.jfif" class="rounded-circle p-2 mx-auto d-block" alt="Artista 10"
+                                style="width:120px; height:120px; object-fit: cover;">
                             <div class="card-body p-2">
                                 <h5 class="card-title mb-0 fs-6">Capo Plaza</h5>
                                 <p class="card-text text-muted fs-6">Artista</p>
                             </div>
                         </div>
                     </div>
-                     <div class="col">
+                    <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
-                            <img src="img/Rammstein.jfif" class="rounded-circle p-2 mx-auto d-block"
-                                alt="Artista 11" style="width:120px; height:120px; object-fit: cover;">
+                            <img src="img/Rammstein.jfif" class="rounded-circle p-2 mx-auto d-block" alt="Artista 11"
+                                style="width:120px; height:120px; object-fit: cover;">
                             <div class="card-body p-2">
                                 <h5 class="card-title mb-0 fs-6">Rammstein</h5>
                                 <p class="card-text text-muted fs-6">Artista</p>
                             </div>
                         </div>
                     </div>
-                     <div class="col">
+                    <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
-                            <img src="img/robZombie.jfif" class="rounded-circle p-2 mx-auto d-block"
-                                alt="Artista 12" style="width:120px; height:120px; object-fit: cover;">
+                            <img src="img/robZombie.jfif" class="rounded-circle p-2 mx-auto d-block" alt="Artista 12"
+                                style="width:120px; height:120px; object-fit: cover;">
                             <div class="card-body p-2">
                                 <h5 class="card-title mb-0 fs-6">robZombie</h5>
                                 <p class="card-text text-muted fs-6">Artista</p>
                             </div>
                         </div>
                     </div>
-                     <div class="col">
+                    <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
                             <img src="https://via.placeholder.com/120/FF5733" class="rounded-circle p-2 mx-auto d-block"
                                 alt="Artista 13" style="width:120px; height:120px; object-fit: cover;">
@@ -336,7 +342,7 @@
                             </div>
                         </div>
                     </div>
-                     <div class="col">
+                    <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
                             <img src="https://via.placeholder.com/120/FF5733" class="rounded-circle p-2 mx-auto d-block"
                                 alt="Artista 4" style="width:120px; height:120px; object-fit: cover;">
@@ -346,7 +352,7 @@
                             </div>
                         </div>
                     </div>
-                     <div class="col">
+                    <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
                             <img src="https://via.placeholder.com/120/FF5733" class="rounded-circle p-2 mx-auto d-block"
                                 alt="Artista 15" style="width:120px; height:120px; object-fit: cover;">
@@ -356,7 +362,7 @@
                             </div>
                         </div>
                     </div>
-                     <div class="col">
+                    <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
                             <img src="https://via.placeholder.com/120/FF5733" class="rounded-circle p-2 mx-auto d-block"
                                 alt="Artista 16" style="width:120px; height:120px; object-fit: cover;">
@@ -366,7 +372,7 @@
                             </div>
                         </div>
                     </div>
-                     <div class="col">
+                    <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
                             <img src="https://via.placeholder.com/120/FF5733" class="rounded-circle p-2 mx-auto d-block"
                                 alt="Artista 17" style="width:120px; height:120px; object-fit: cover;">
@@ -376,7 +382,7 @@
                             </div>
                         </div>
                     </div>
-                     <div class="col">
+                    <div class="col">
                         <div class="card bg-dark text-white border-0 h-100">
                             <img src="https://via.placeholder.com/120/FF5733" class="rounded-circle p-2 mx-auto d-block"
                                 alt="Artista 18" style="width:120px; height:120px; object-fit: cover;">
@@ -644,6 +650,14 @@
                     </div>
                 </div>
             </div>
+            <section id="genre-artists-section" class="page-content-item d-none">
+                <div class="container-fluid mt-4">
+                    <h2 id="current-genre-title" class="mb-4"></h2>
+                    <div id="artists-list-container"
+                        class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 
