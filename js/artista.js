@@ -9,23 +9,25 @@ let userPlaylists = [];
 let currentAudioPlayer = new Audio();
 let currentSongIndex = -1; // Indice della canzone corrente nella playlist attiva
 let currentPlaylist = []; // La playlist attualmente in riproduzione (array di oggetti canzone)
+let isPlaying = false; // <<< QUESTA È LA VARIABILE FONDAMENTALE CHE MANCAVA!
 
 // --- Selezioni degli elementi HTML ---
 const sections = document.querySelectorAll('.page-content-wrapper section');
 const sidebarTogglers = document.querySelectorAll('.sidebar-toggler');
 const mainSidebar = document.getElementById('main-sidebar');
 
-// Elementi del player musicale
+// Elementi del player musicale (verificati con i tuoi ID)
 const playPauseBtn = document.getElementById('play-pause-btn');
+const playPauseIcon = playPauseBtn ? playPauseBtn.querySelector('i') : null; // SELEZIONE DELL'ICONA ALL'INTERNO DEL PULSANTE
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
-const songTitleDisplay = document.getElementById('song-title');
-const artistNameDisplay = document.getElementById('artist-name');
-const albumArtDisplay = document.getElementById('album-art-player');
-const progressBar = document.getElementById('progress-bar');
-const timeElapsedDisplay = document.getElementById('time-elapsed');
-const timeDurationDisplay = document.getElementById('time-duration');
-const progressBarWrapper = document.getElementById('progress-bar-wrapper');
+const songTitleDisplay = document.getElementById('song-title'); // Il tuo ID
+const artistNameDisplay = document.getElementById('artist-name'); // Il tuo ID
+const albumArtDisplay = document.getElementById('album-art-player'); // Il tuo ID
+const progressBar = document.getElementById('progress-bar'); // Il tuo ID per la barra di riempimento
+const timeElapsedDisplay = document.getElementById('time-elapsed'); // Il tuo ID
+const timeDurationDisplay = document.getElementById('time-duration'); // Il tuo ID
+const progressBarWrapper = document.getElementById('progress-bar-wrapper'); // Il tuo ID per il contenitore della progress bar
 
 // Elementi della sezione Crea Playlist
 const createPlaylistBtn = document.getElementById('create-playlist-btn');
@@ -60,6 +62,15 @@ window.showSection = function(sectionId) {
 };
 
 /**
+ * Funzione per formattare il tempo (es. 0:00)
+ */
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+/**
  * Carica e riproduce una canzone.
  * Questa funzione è definita globalmente in window.loadAndPlaySong per essere accessibile da altri script.
  * @param {object} song - L'oggetto canzone da riprodurre.
@@ -69,19 +80,86 @@ window.showSection = function(sectionId) {
 window.loadAndPlaySong = function(song, playlist, index) {
     console.log("Tentativo di caricare e riprodurre la canzone:", song);
 
+    // Gestione di canzoni non valide
     if (!song || !song.audioSrc) {
         console.error("Tentativo di riprodurre una canzone non valida o senza audioSrc:", song);
+        currentAudioPlayer.pause();
+        isPlaying = false;
+        if (playPauseIcon) {
+            playPauseIcon.classList.remove('bi-pause-fill');
+            playPauseIcon.classList.add('bi-play-fill');
+        }
+        if (songTitleDisplay) songTitleDisplay.textContent = "Nessuna canzone";
+        if (artistNameDisplay) artistNameDisplay.textContent = "";
+        if (albumArtDisplay) albumArtDisplay.src = "https://via.placeholder.com/60/777777?text=NO+ART";
+        if (progressBar) progressBar.style.width = '0%';
+        if (timeElapsedDisplay) timeElapsedDisplay.textContent = '0:00';
+        if (timeDurationDisplay) timeDurationDisplay.textContent = '0:00';
         return;
     }
+
     currentPlaylist = playlist;
     currentSongIndex = index;
 
     currentAudioPlayer.src = song.audioSrc;
-    songTitleDisplay.textContent = song.title || "Titolo Sconosciuto";
-    artistNameDisplay.textContent = song.artist || "Artista Sconosciuto";
-    albumArtDisplay.src = song.albumArt || "https://via.placeholder.com/60/777777?text=NO+ART";
-    currentAudioPlayer.play();
-    playPauseBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+
+    // Aggiorna le info del player nella UI (controllando che gli elementi esistano)
+    if (songTitleDisplay) songTitleDisplay.textContent = song.title || "Titolo Sconosciuto";
+    if (artistNameDisplay) artistNameDisplay.textContent = song.artist || "Artista Sconosciuto";
+    // Assicurati che albumArt sia un URL valido, altrimenti usa un placeholder
+    if (albumArtDisplay) albumArtDisplay.src = (song.albumArt && song.albumArt.startsWith('http')) ? song.albumArt : "https://via.placeholder.com/60/777777?text=NO+ART";
+
+    // Avvia la riproduzione e aggiorna l'icona
+    isPlaying = true; // Imposta lo stato a true quando carichi una nuova canzone per riprodurla
+    currentAudioPlayer.play()
+        .then(() => {
+            if (playPauseIcon) {
+                playPauseIcon.classList.remove('bi-play-fill');
+                playPauseIcon.classList.add('bi-pause-fill');
+            }
+        })
+        .catch(error => {
+            console.error("Errore durante la riproduzione automatica:", error);
+            // Questo può accadere se il browser blocca la riproduzione automatica.
+            // Lascia l'icona come "play" e l'utente dovrà cliccare.
+            isPlaying = false;
+            if (playPauseIcon) {
+                playPauseIcon.classList.remove('bi-pause-fill');
+                playPauseIcon.classList.add('bi-play-fill');
+            }
+        });
+}
+
+/**
+ * Toglie/mette in pausa la riproduzione e aggiorna l'icona del pulsante.
+ */
+function togglePlayPause() {
+    // Se non c'è una canzone caricata e in riproduzione, o una playlist, non fare nulla
+    if (!currentAudioPlayer.src && currentPlaylist.length === 0) {
+        console.warn("Nessuna canzone caricata e nessuna playlist attiva. Impossibile avviare/mettere in pausa.");
+        return;
+    }
+
+    // Se c'è una playlist ma nessuna canzone caricata, prova a caricare la prima
+    if (!currentAudioPlayer.src && currentPlaylist.length > 0) {
+        window.loadAndPlaySong(currentPlaylist[0], currentPlaylist, 0);
+        return; // loadAndPlaySong gestirà lo stato isPlaying e l'icona
+    }
+
+    isPlaying = !isPlaying; // Inverti lo stato
+    if (playPauseIcon) { // Controlla se l'elemento icona esiste
+        if (isPlaying) {
+            playPauseIcon.classList.remove('bi-play-fill');
+            playPauseIcon.classList.add('bi-pause-fill');
+            currentAudioPlayer.play();
+            console.log(`Riproduzione: ${songTitleDisplay ? songTitleDisplay.textContent : 'Sconosciuto'}`);
+        } else {
+            playPauseIcon.classList.remove('bi-pause-fill');
+            playPauseIcon.classList.add('bi-play-fill');
+            currentAudioPlayer.pause();
+            console.log(`Pausa: ${songTitleDisplay ? songTitleDisplay.textContent : 'Sconosciuto'}`);
+        }
+    }
 }
 
 /**
@@ -93,6 +171,19 @@ function playNextSong() {
         window.loadAndPlaySong(currentPlaylist[currentSongIndex], currentPlaylist, currentSongIndex);
     } else {
         console.warn("Nessuna playlist attiva per riprodurre il prossimo brano.");
+        // Resetta lo stato e l'interfaccia del player se la playlist è vuota
+        currentAudioPlayer.pause();
+        isPlaying = false;
+        if (playPauseIcon) {
+            playPauseIcon.classList.remove('bi-pause-fill');
+            playPauseIcon.classList.add('bi-play-fill');
+        }
+        if (songTitleDisplay) songTitleDisplay.textContent = "Nessuna canzone";
+        if (artistNameDisplay) artistNameDisplay.textContent = "";
+        if (albumArtDisplay) albumArtDisplay.src = "https://via.placeholder.com/60/777777?text=NO+ART";
+        if (progressBar) progressBar.style.width = '0%';
+        if (timeElapsedDisplay) timeElapsedDisplay.textContent = '0:00';
+        if (timeDurationDisplay) timeDurationDisplay.textContent = '0:00';
     }
 }
 
@@ -105,6 +196,19 @@ function playPreviousSong() {
         window.loadAndPlaySong(currentPlaylist[currentSongIndex], currentPlaylist, currentSongIndex);
     } else {
         console.warn("Nessuna playlist attiva per riprodurre il brano precedente.");
+        // Resetta lo stato e l'interfaccia del player se la playlist è vuota
+        currentAudioPlayer.pause();
+        isPlaying = false;
+        if (playPauseIcon) {
+            playPauseIcon.classList.remove('bi-pause-fill');
+            playPauseIcon.classList.add('bi-play-fill');
+        }
+        if (songTitleDisplay) songTitleDisplay.textContent = "Nessuna canzone";
+        if (artistNameDisplay) artistNameDisplay.textContent = "";
+        if (albumArtDisplay) albumArtDisplay.src = "https://via.placeholder.com/60/777777?text=NO+ART";
+        if (progressBar) progressBar.style.width = '0%';
+        if (timeElapsedDisplay) timeElapsedDisplay.textContent = '0:00';
+        if (timeDurationDisplay) timeDurationDisplay.textContent = '0:00';
     }
 }
 
@@ -115,8 +219,9 @@ function populateSongsForPlaylist() {
     if (!songsListForPlaylist) return;
     songsListForPlaylist.innerHTML = ''; // Pulisci la lista
 
-    if (allAlbums.length === 0) {
-        songsListForPlaylist.innerHTML = '<p class="text-muted ms-3">Nessun album disponibile per creare playlist.</p>';
+    // allAlbums deve essere definito in dati.js e caricato prima!
+    if (typeof allAlbums === 'undefined' || allAlbums.length === 0) {
+        songsListForPlaylist.innerHTML = '<p class="text-muted ms-3">Nessun album disponibile per creare playlist (controlla dati.js).</p>';
         return;
     }
 
@@ -126,13 +231,13 @@ function populateSongsForPlaylist() {
             listItem.classList.add('list-group-item', 'bg-dark', 'text-white', 'd-flex', 'align-items-center');
             listItem.innerHTML = `
                 <input type="checkbox" class="form-check-input me-3"
-                    data-album-art="${album.albumArt}"
-                    data-album-title="${album.title}"
-                    data-artist="${album.artist}"
-                    data-song-title="${song.title}"
-                    data-song-audio-src="${song.audioSrc}">
-                <img src="${album.albumArt}" class="rounded me-2" style="width: 40px; height: 40px; object-fit: cover;">
-                <span>${song.title} - ${album.artist} (${album.title})</span>
+                    data-album-art="${album.albumArt || ''}"
+                    data-album-title="${album.title || ''}"
+                    data-artist="${album.artist || ''}"
+                    data-song-title="${song.title || ''}"
+                    data-song-audio-src="${song.audioSrc || ''}">
+                <img src="${album.albumArt || 'https://via.placeholder.com/40/777777?text=NO+ART'}" class="rounded me-2" alt="Album Art" style="width: 40px; height: 40px; object-fit: cover;">
+                <span>${song.title || 'Titolo Sconosciuto'} - ${album.artist || 'Artista Sconosciuto'} (${album.title || 'Album Sconosciuto'})</span>
             `;
             songsListForPlaylist.appendChild(listItem);
         });
@@ -154,7 +259,11 @@ function renderUserPlaylists() {
     userPlaylists.forEach((playlist, index) => {
         const playlistCard = document.createElement('div');
         playlistCard.classList.add('col-12', 'col-md-6', 'col-lg-4', 'mb-3');
-        const coverArt = playlist.songs.length > 0 ? playlist.songs[0].albumArt : 'https://via.placeholder.com/150/0000FF/FFFFFF?text=PLAYLIST';
+        // Assicurati che coverArt sia un URL valido, altrimenti usa un placeholder
+        const coverArt = (playlist.songs.length > 0 && playlist.songs[0].albumArt && playlist.songs[0].albumArt.startsWith('http'))
+                         ? playlist.songs[0].albumArt
+                         : 'https://via.placeholder.com/150/0000FF/FFFFFF?text=PLAYLIST';
+
         playlistCard.innerHTML = `
             <div class="card bg-dark text-white h-100 playlist-card" data-playlist-index="${index}">
                 <div class="card-body d-flex align-items-center">
@@ -174,6 +283,7 @@ function renderUserPlaylists() {
 
     document.querySelectorAll('.playlist-card').forEach(card => {
         card.addEventListener('click', function(event) {
+            // Se il click è sul pulsante di eliminazione, non riprodurre
             if (event.target.closest('.delete-playlist-btn')) {
                 return;
             }
@@ -181,6 +291,7 @@ function renderUserPlaylists() {
             if (!isNaN(playlistIndex) && playlistIndex >= 0 && playlistIndex < userPlaylists.length) {
                 const playlistToPlay = userPlaylists[playlistIndex].songs;
                 if (playlistToPlay.length > 0) {
+                    // Mappa le canzoni per assicurarti che abbiano tutti i campi necessari per il player
                     const playablePlaylist = playlistToPlay.map(song => ({
                         title: song.title,
                         audioSrc: song.audioSrc,
@@ -191,6 +302,19 @@ function renderUserPlaylists() {
                     window.loadAndPlaySong(playablePlaylist[0], playablePlaylist, 0);
                 } else {
                     console.log("Playlist vuota, impossibile riprodurre.");
+                    // Reset UI player se la playlist è vuota
+                    currentAudioPlayer.pause();
+                    isPlaying = false;
+                    if (playPauseIcon) {
+                        playPauseIcon.classList.remove('bi-pause-fill');
+                        playPauseIcon.classList.add('bi-play-fill');
+                    }
+                    if (songTitleDisplay) songTitleDisplay.textContent = "Nessuna canzone";
+                    if (artistNameDisplay) artistNameDisplay.textContent = "";
+                    if (albumArtDisplay) albumArtDisplay.src = "https://via.placeholder.com/60/777777?text=NO+ART";
+                    if (progressBar) progressBar.style.width = '0%';
+                    if (timeElapsedDisplay) timeElapsedDisplay.textContent = '0:00';
+                    if (timeDurationDisplay) timeDurationDisplay.textContent = '0:00';
                 }
             }
         });
@@ -198,7 +322,7 @@ function renderUserPlaylists() {
 
     document.querySelectorAll('.delete-playlist-btn').forEach(button => {
         button.addEventListener('click', function(event) {
-            event.stopPropagation();
+            event.stopPropagation(); // Evita che il click si propaghi alla card sottostante
             const playlistIndex = parseInt(this.dataset.playlistIndex);
             if (confirm("Sei sicuro di voler eliminare questa playlist?")) {
                 userPlaylists.splice(playlistIndex, 1);
@@ -237,16 +361,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Listener per la creazione di playlist (pulsante "Crea Playlist" nella sidebar)
-    if (createPlaylistBtn) {
+    // Se "createPlaylistBtn" è il pulsante della sidebar per navigare alla sezione di creazione playlist:
+    if (createPlaylistBtn) { // Controlla se questo ID esiste nel tuo HTML
         createPlaylistBtn.addEventListener('click', () => {
             window.showSection('create-playlist-section');
             document.querySelectorAll('.sidebar-nav .nav-link').forEach(link => {
                 link.classList.remove('active');
             });
+            // Attiva il link "Crea playlist" nella sidebar se ne hai uno con l'ID o data-target-section
+            const createPlaylistNavLink = document.querySelector('.sidebar-nav .nav-link[data-target-section="create-playlist-section"]');
+            if (createPlaylistNavLink) {
+                createPlaylistNavLink.classList.add('active');
+            }
             populateSongsForPlaylist();
         });
     }
 
+    // Listener per il salvataggio della playlist
     if (savePlaylistBtn) {
         savePlaylistBtn.addEventListener('click', () => {
             const playlistName = playlistNameInput.value.trim();
@@ -267,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (selectedSongs.length === 0) {
-                alert("Per favore, seleziona almeno una canzone per la playlist.");
+                alert("Per favorere, seleziona almeno una canzone per la playlist.");
                 return;
             }
 
@@ -280,10 +411,11 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('#songs-list-for-playlist input[type="checkbox"]').forEach(checkbox => {
                 checkbox.checked = false;
             });
-            window.showSection('library-section');
-            renderUserPlaylists();
+            window.showSection('library-section'); // Torna alla libreria dopo aver salvato
+            renderUserPlaylists(); // Aggiorna la visualizzazione delle playlist
             alert(`Playlist "${playlistName}" salvata con successo!`);
 
+            // Aggiorna lo stato "active" della sidebar dopo aver salvato la playlist
             document.querySelectorAll('.sidebar-nav .nav-link').forEach(link => {
                 if (link.dataset.targetSection === 'library-section') {
                     link.classList.add('active');
@@ -296,15 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Listener per i controlli del player
     if (playPauseBtn) {
-        playPauseBtn.addEventListener('click', () => {
-            if (currentAudioPlayer.paused) {
-                currentAudioPlayer.play();
-                playPauseBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
-            } else {
-                currentAudioPlayer.pause();
-                playPauseBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
-            }
-        });
+        playPauseBtn.addEventListener('click', togglePlayPause); // Ora chiama la funzione unificata
     }
 
     if (prevBtn) {
@@ -315,34 +439,38 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.addEventListener('click', playNextSong);
     }
 
-    // Aggiornamento della progress bar
-    if (currentAudioPlayer && progressBar) {
+    // Aggiornamento della progress bar e dei tempi
+    if (currentAudioPlayer && progressBar && timeElapsedDisplay && timeDurationDisplay) {
         currentAudioPlayer.addEventListener('timeupdate', () => {
-            const progress = (currentAudioPlayer.currentTime / currentAudioPlayer.duration) * 100;
-            progressBar.style.width = `${progress}%`;
+            if (!isNaN(currentAudioPlayer.duration) && currentAudioPlayer.duration > 0) { // Controlla anche che la durata non sia 0 o NaN
+                const progress = (currentAudioPlayer.currentTime / currentAudioPlayer.duration) * 100;
+                progressBar.style.width = `${progress}%`;
 
-            const formatTime = (seconds) => {
-                const minutes = Math.floor(seconds / 60);
-                const secs = Math.floor(seconds % 60);
-                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-            };
+                timeElapsedDisplay.textContent = formatTime(currentAudioPlayer.currentTime);
+            }
+        });
 
-            if (timeElapsedDisplay) timeElapsedDisplay.textContent = formatTime(currentAudioPlayer.currentTime);
-            if (timeDurationDisplay && !isNaN(currentAudioPlayer.duration)) {
+        currentAudioPlayer.addEventListener('loadedmetadata', () => {
+            if (!isNaN(currentAudioPlayer.duration)) {
                 timeDurationDisplay.textContent = formatTime(currentAudioPlayer.duration);
             }
         });
 
-        currentAudioPlayer.addEventListener('ended', playNextSong);
+        currentAudioPlayer.addEventListener('ended', playNextSong); // Riproduce la prossima canzone quando la corrente finisce
 
-        if (progressBarWrapper) {
+        // Click sulla progress bar per cercare nel brano
+        if (progressBarWrapper) { // Assicurati che il contenitore della barra esista
             progressBarWrapper.addEventListener('click', (e) => {
-                const clickX = e.offsetX;
-                const width = progressBarWrapper.clientWidth;
-                const duration = currentAudioPlayer.duration;
-                if (!isNaN(duration)) {
-                    currentAudioPlayer.currentTime = (clickX / width) * duration;
+                // Controlla se una canzone è caricata e la sua durata è disponibile
+                if (!currentAudioPlayer.src || isNaN(currentAudioPlayer.duration) || currentAudioPlayer.duration === 0) {
+                    console.warn("Impossibile cercare: nessuna canzone caricata o durata non disponibile.");
+                    return;
                 }
+                const clickX = e.offsetX; // Posizione X del click all'interno del contenitore della barra
+                const containerWidth = progressBarWrapper.offsetWidth; // Larghezza totale del contenitore
+                const seekTime = (clickX / containerWidth) * currentAudioPlayer.duration; // Calcola il tempo in secondi
+
+                currentAudioPlayer.currentTime = seekTime; // Imposta il tempo della canzone
             });
         }
     }

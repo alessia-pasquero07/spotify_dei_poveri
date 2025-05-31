@@ -194,3 +194,40 @@ body {
         width: 50%; /* 2 colonne per default */
     }
 }
+
+/* Aggiungi o modifica queste regole nel tuo file css/style.css */
+
+.player-timeline {
+    display: flex; /* Rende gli elementi interni flessibili */
+    align-items: center; /* Allinea verticalmente gli elementi */
+    width: 100%; /* Occupa tutta la larghezza disponibile nel suo contenitore flex-grow-1 */
+    margin-top: 0.5rem; /* Un po' di spazio tra i controlli e la timeline */
+}
+
+.time-current,
+.time-duration {
+    font-size: 0.8rem;
+    color: #bbb; /* Un grigio più chiaro per i tempi */
+    /* Nessun margin qui, perché la barra li spaziera' */
+}
+
+.progress-bar-container {
+    flex-grow: 1; /* Fa sì che la barra occupi lo spazio rimanente tra i tempi */
+    height: 4px; /* Altezza della barra */
+    background-color: #4a4a4a; /* Colore di sfondo della barra (grigio scuro) */
+    border-radius: 2px; /* Angoli leggermente arrotondati */
+    margin: 0 0.75rem; /* Margine ai lati per separare dai tempi */
+    cursor: pointer; /* Indica che è cliccabile */
+    position: relative; /* Necessario per il riempimento assoluto */
+    overflow: hidden; /* Assicura che il fill non esca dai bordi arrotondati */
+}
+
+.progress-bar-fill {
+    height: 100%; /* Occupare tutta l'altezza del container */
+    width: 0%; /* Inizialmente 0%, sarà aggiornato dal JS */
+    background-color: #1ed760; /* Colore verde di Spotify/successo Bootstrap */
+    border-radius: 2px; /* Anche il riempimento deve avere gli angoli arrotondati */
+    position: absolute; /* Si posiziona all'interno del container */
+    top: 0;
+    left: 0;
+}
