@@ -231,3 +231,48 @@ body {
     top: 0;
     left: 0;
 }
+
+
+/* Stili per le card di categoria nella sezione Cerca */
+.search-category-card {
+    position: relative; /* Per posizionare l'immagine al suo interno */
+    overflow: hidden; /* Nasconde le parti dell'immagine che fuoriescono */
+    border-radius: 8px; /* Bordi leggermente arrotondati come Spotify */
+    display: flex; /* Per posizionare il titolo in alto a sinistra */
+    flex-direction: column;
+    justify-content: flex-end; /* Allinea il titolo in basso */
+    align-items: flex-start; /* Allinea il titolo a sinistra */
+}
+
+.search-category-card .card-title {
+    position: relative; /* Assicura che il titolo sia sopra l'immagine */
+    z-index: 2; /* Pone il titolo sopra l'immagine */
+    margin-bottom: 0; /* Rimuove il margine inferiore di default del titolo */
+    padding-left: 0.5rem; /* Piccolo padding a sinistra per il testo */
+    font-size: 1.1rem; /* Dimensione del font più appropriata */
+    font-weight: bold;
+}
+
+.category-card-img {
+    position: absolute; /* Posizionamento assoluto all'interno della card */
+    bottom: -15px; /* Sposta l'immagine leggermente fuori dal basso */
+    right: -15px; /* Sposta l'immagine leggermente fuori da destra */
+    width: 80px; /* Dimensione dell'immagine */
+    height: 80px; /* Dimensione dell'immagine */
+    object-fit: cover; /* Assicura che l'immagine copra l'area senza distorsioni */
+    transform: rotate(25deg); /* Ruota l'immagine per l'effetto inclinato */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Ombra per profondità */
+    border-radius: 4px; /* Leggera arrotondatura per l'immagine */
+    z-index: 1; /* Pone l'immagine sotto il titolo */
+}
+
+/* Regolazione per schermi più piccoli se necessario */
+@media (max-width: 575.98px) { /* Esempio per breakpoint sm */
+    .category-card-img {
+        width: 60px;
+        height: 60px;
+        bottom: -10px;
+        right: -10px;
+        transform: rotate(20deg);
+    }
+}
