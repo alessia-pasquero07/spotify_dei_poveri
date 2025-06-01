@@ -400,4 +400,29 @@ document.addEventListener('DOMContentLoaded', function () {
     window.showSection('home-section', false);
     renderUserPlaylists(); // Carica le playlist utente nella sezione Libreria all'avvio
     renderPlaylistsInSidebar(); // Nuovo: Carica le playlist utente nella sidebar all'avvio
+
+    // --- Mostra la sezione artisti per genere quando si clicca su una card di genere ---
+    document.addEventListener('click', function (e) {
+        let card = e.target.closest('.genre-mix-card');
+        if (card) {
+            e.preventDefault();
+            // Debug: mostra cosa è stato cliccato
+            console.log('CLICK SU CARD:', card, card.dataset.genre);
+            // Nascondi tutte le sezioni principali
+            document.querySelectorAll('#page-content-wrapper > .container-fluid, #page-content-wrapper > section').forEach(section => {
+                section.classList.add('d-none');
+            });
+            // Mostra la sezione artisti per genere
+            const genreArtistsSection = document.getElementById('genre-artists-section');
+            if (genreArtistsSection) {
+                genreArtistsSection.classList.remove('d-none');
+                genreArtistsSection.scrollIntoView({behavior: 'smooth'});
+            }
+            // Mostra il nome del genere selezionato
+            const genreTitle = document.getElementById('current-genre-title');
+            if (genreTitle && card.dataset.genre) {
+                genreTitle.textContent = card.dataset.genre;
+            }
+        }
+    });
 });
