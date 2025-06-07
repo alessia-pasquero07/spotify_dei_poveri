@@ -67,5 +67,30 @@
 	      	</div>
 	    </div>
 	</div>
+	<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Trova il bottone Login (assicurati che sia il primo .card-front .btn)
+    const loginBtn = document.querySelector('.card-front .btn');
+    // Trova i campi email e password
+    const emailInput = document.querySelector('.card-front input[type="email"]');
+    const passwordInput = document.querySelector('.card-front input[type="password"]');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const email = emailInput?.value.trim();
+            const password = passwordInput?.value.trim();
+            if (!email || !password) {
+                alert('Inserisci sia email che password!');
+                return;
+            }
+            // Salva i dati in localStorage per index.html
+            localStorage.setItem('loggedUserEmail', email);
+            localStorage.setItem('loggedUserImg', 'img/logAccount.jpg');
+            // Vai alla home
+            window.location.href = 'index.html';
+        });
+    }
+});
+</script>
 </body>
 </html>

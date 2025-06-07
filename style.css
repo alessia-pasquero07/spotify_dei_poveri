@@ -276,3 +276,7 @@ body {
         transform: rotate(20deg);
     }
 }
+
+#navbar-user-img{
+    width: 40px;
+}

@@ -70,7 +70,8 @@
                         <div class="dropdown">
                             <a class="btn btn-secondary rounded-pill dropdown-toggle" href="#" role="button"
                                 id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://via.placeholder.com/25" alt="User Avatar" class="rounded-circle me-1">
+                                <img src="https://via.placeholder.com/25" alt="User Avatar" class="rounded-circle me-1"
+                                    id="navbar-user-img">
                                 Nome Utente
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
@@ -756,6 +757,57 @@
     </div>
     </div>
     <script src="js/index.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    // LOGIN: aggiorna navbar se utente loggato
+    const userEmail = localStorage.getItem('loggedUserEmail');
+    const userImg = localStorage.getItem('loggedUserImg');
+    if (userEmail) {
+        // Nascondi il bottone ACCEDI
+        const accediBtn = document.querySelector('a.btn.btn-light[href="log.html"]');
+        if (accediBtn) accediBtn.classList.add('d-none');
+        // Aggiorna nome utente e avatar
+        const dropdown = document.getElementById('dropdownMenuLink');
+        if (dropdown) {
+            const img = dropdown.querySelector('img#navbar-user-img');
+            if (img && userImg) img.src = userImg;
+            // Sostituisci il testo "Nome Utente" con la mail
+            dropdown.childNodes.forEach(node => {
+                if (node.nodeType === Node.TEXT_NODE && node.textContent.includes('Nome Utente')) {
+                    node.textContent = ' ' + userEmail;
+                }
+            });
+        }
+    }
+
+    // LOGOUT: ripristina stato iniziale quando clicchi "Esci" nel dropdown
+    const logoutItem = Array.from(document.querySelectorAll('.dropdown-menu .dropdown-item'))
+        .find(item => item.textContent.trim().toLowerCase() === 'esci');
+    if (logoutItem) {
+        logoutItem.addEventListener('click', function (e) {
+            e.preventDefault();
+            // 1. Mostra di nuovo il bottone ACCEDI
+            const accediBtn = document.querySelector('a.btn.btn-light[href="log.html"]');
+            if (accediBtn) accediBtn.classList.remove('d-none');
+            // 2. Ripristina il nome utente
+            const dropdown = document.getElementById('dropdownMenuLink');
+            if (dropdown) {
+                dropdown.childNodes.forEach(node => {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        node.textContent = ' Nome Utente';
+                    }
+                });
+                // 3. Ripristina immagine placeholder
+                const img = dropdown.querySelector('img#navbar-user-img');
+                if (img) img.src = 'https://via.placeholder.com/25';
+            }
+            // Rimuovi dati dal localStorage
+            localStorage.removeItem('loggedUserEmail');
+            localStorage.removeItem('loggedUserImg');
+        });
+    }
+});
+</script>
 </body>
 
 </html>
