@@ -1,4 +1,4 @@
-    const allAlbums = [
+const allAlbums = [
         // --- POP --- (3 Album, min 5 canzoni ciascuno)
         {
             id: 1,
@@ -6,7 +6,7 @@
             artist: 'Rihanna',
             genre: 'Pop',
             year: 2016,
-            albumArt: 'https://via.placeholder.com/150/FFD700?text=RIHANNA+ANTI', // Placeholder aggiornato
+            albumArt: 'img/anti.jfif', // Placeholder aggiornato
             songs: [
                 { id: 201, title: 'Work', duration: '3:39', audioSrc: '' },
                 { id: 202, title: 'Needed Me', duration: '3:11', audioSrc: '' },
@@ -21,7 +21,7 @@
             artist: 'Billie Eilish',
             genre: 'Pop',
             year: 2019,
-            albumArt: 'https://via.placeholder.com/150/FFD700?text=BILLIE+WWAFAWDWG', // Placeholder aggiornato
+            albumArt: 'img/when.jfif', // Placeholder aggiornato
             songs: [
                 { id: 206, title: 'Bad Guy', duration: '3:14', audioSrc: '' },
                 { id: 207, title: 'Bury a Friend', duration: '3:13', audioSrc: '' },
@@ -36,7 +36,7 @@
             artist: 'Dua Lipa',
             genre: 'Pop',
             year: 2020,
-            albumArt: 'https://via.placeholder.com/150/FFD700?text=DUA+FUTURE', // Placeholder aggiornato
+            albumArt: 'img/FutureNostalgie.jfif', // Placeholder aggiornato
             songs: [
                 { id: 211, title: 'Don\'t Start Now', duration: '3:03', audioSrc: '' },
                 { id: 212, title: 'Physical', duration: '3:13', audioSrc: '' },
@@ -277,6 +277,54 @@
                 { id: 288, title: 'Toccata and Fugue in D Minor', duration: '8:30', audioSrc: '' },
                 { id: 289, title: 'Air on the G String', duration: '4:00', audioSrc: '' },
                 { id: 290, title: 'Mass in B Minor: Kyrie', duration: '10:00', audioSrc: '' }
+            ]
+        },
+        // --- POP --- (aggiunta Ariana Grande)
+        {
+            id: 19,
+            title: 'thank u, next',
+            artist: 'Ariana Grande',
+            genre: 'Pop',
+            year: 2019,
+            albumArt: 'img/thank u, next.jfif', // Placeholder aggiornato
+            songs: [
+                { id: 291, title: '7 rings', duration: '2:58', audioSrc: '' },
+                { id: 292, title: 'thank u, next', duration: '3:27', audioSrc: '' },
+                { id: 293, title: 'break up with your girlfriend, i’m bored', duration: '3:10', audioSrc: '' },
+                { id: 294, title: 'imagine', duration: '3:32', audioSrc: '' },
+                { id: 295, title: 'NASA', duration: '3:02', audioSrc: '' }
+            ]
+        },
+        // --- POP --- (aggiunta Elodie)
+        {
+            id: 20,
+            title: 'Ok. Respira',
+            artist: 'Elodie',
+            genre: 'Pop',
+            year: 2023,
+            albumArt: 'img/OkRespira.jfif', // Placeholder aggiornato
+            songs: [
+                { id: 296, title: 'Due', duration: '2:55', audioSrc: '' },
+                { id: 297, title: 'Ok. Respira', duration: '2:45', audioSrc: '' },
+                { id: 298, title: 'Bagno a mezzanotte', duration: '2:58', audioSrc: '' },
+                { id: 299, title: 'Tribale', duration: '2:48', audioSrc: '' },
+                { id: 300, title: 'Guaranà', duration: '2:48', audioSrc: '' }
+            ]
+        },
+        // --- HIP-HOP --- (aggiunta Guè Pequeno)
+        {
+            id: 21,
+            title: 'Gvesvs',
+            artist: 'Guè Pequeno',
+            genre: 'Hip-Hop',
+            year: 2021,
+            albumArt: '',
+            songs: [
+                { id: 301, title: 'Veleno', duration: '2:50', audioSrc: '' },
+                { id: 302, title: 'Piango sulla Lambo', duration: '2:58', audioSrc: '' },
+                { id: 303, title: 'Blitz!', duration: '2:36', audioSrc: '' },
+                { id: 304, title: 'Cookies N’ Cream', duration: '2:44', audioSrc: '' },
+                { id: 305, title: 'Lontano dai guai', duration: '2:54', audioSrc: '' }
             ]
         }
     ];

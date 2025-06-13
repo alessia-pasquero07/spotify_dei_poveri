@@ -366,33 +366,33 @@
                                     </div>
                                     <div class="col">
                                         <div class="card bg-dark text-white border-0 h-100">
-                                            <img src="https://via.placeholder.com/120/FF5733/FFFFFF"
+                                            <img src="img/arianaGrande.jpg"
                                                 class="rounded-circle p-2 mx-auto d-block" alt="Artista 13"
                                                 style="width:120px; height:120px; object-fit: cover;">
                                             <div class="card-body p-2">
-                                                <h5 class="card-title mb-0 fs-6">Artista Pop 1</h5>
+                                                <h5 class="card-title mb-0 fs-6">Ariana Grande</h5>
                                                 <p class="card-text text-muted fs-6">Artista</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="card bg-dark text-white border-0 h-100">
-                                            <img src="https://via.placeholder.com/120/FF5733/FFFFFF"
+                                            <img src="img/elodie.jfif"
                                                 class="rounded-circle p-2 mx-auto d-block" alt="Artista 14"
                                                 style="width:120px; height:120px; object-fit: cover;">
                                             <div class="card-body p-2">
-                                                <h5 class="card-title mb-0 fs-6">Artista Pop 2</h5>
+                                                <h5 class="card-title mb-0 fs-6">Elodie</h5>
                                                 <p class="card-text text-muted fs-6">Artista</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="card bg-dark text-white border-0 h-100">
-                                            <img src="https://via.placeholder.com/120/FF5733/FFFFFF"
+                                            <img src="img/gue.jfif"
                                                 class="rounded-circle p-2 mx-auto d-block" alt="Artista 15"
                                                 style="width:120px; height:120px; object-fit: cover;">
                                             <div class="card-body p-2">
-                                                <h5 class="card-title mb-0 fs-6">Artista Pop 3</h5>
+                                                <h5 class="card-title mb-0 fs-6">Gue Pequegno</h5>
                                                 <p class="card-text text-muted fs-6">Artista</p>
                                             </div>
                                         </div>
@@ -694,12 +694,46 @@
             </div>
             <section id="genre-artists-section" class="page-content-item d-none">
                 <div class="container-fluid mt-4">
-                    <h2 id="current-genre-title" class="mb-4"></h2>
-                    <div id="artists-list-container"
-                        class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+                    <div class="d-flex align-items-end mb-4" id="playlist-header">
+                        <img id="playlist-cover" src="" alt="Playlist Cover" class="rounded shadow"
+                            style="width: 180px; height: 180px; object-fit: cover;">
+                        <div class="ms-4">
+                            <h1 class="display-4 fw-bold mb-1" id="playlist-title">Titolo Playlist</h1>
+                            <p class="lead mb-2" id="playlist-desc">Descrizione della playlist</p>
+                            <div class="text-muted mb-3" id="playlist-meta">Creatore • 0 brani • 0 min</div>
+                            <button class="btn btn-success btn-lg rounded-circle shadow" id="playlist-play-btn"
+                                style="width:64px; height:64px;"><i class="bi bi-play-fill fs-1"></i></button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-borderless align-middle playlist-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width:40px;">#</th>
+                                    <th scope="col">Titolo</th>
+                                    <th scope="col">Artista</th>
+                                    <th scope="col">Album</th>
+                                    <th scope="col" style="width:80px;">Durata</th>
+                                    <th scope="col" style="width:60px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="playlist-tracks">
+                                <!-- Brani generati dinamicamente -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
+            
+
+    <!-- Sezione Brani Preferiti -->
+    <section id="liked-songs-section" class="container-fluid d-none p-4">
+        <h2 class="mb-4"><i class="bi bi-heart-fill text-success me-2"></i>Brani che ti piacciono</h2>
+        <div id="liked-songs-list">
+            <div class="alert alert-info text-dark">Non hai ancora aggiunto nessun brano ai preferiti.</div>
+        </div>
+    </section>
+    <!-- Fine sezione Brani Preferiti -->
         </div>
     </div>
 
@@ -758,56 +792,56 @@
     </div>
     <script src="js/index.js"></script>
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // LOGIN: aggiorna navbar se utente loggato
-    const userEmail = localStorage.getItem('loggedUserEmail');
-    const userImg = localStorage.getItem('loggedUserImg');
-    if (userEmail) {
-        // Nascondi il bottone ACCEDI
-        const accediBtn = document.querySelector('a.btn.btn-light[href="log.html"]');
-        if (accediBtn) accediBtn.classList.add('d-none');
-        // Aggiorna nome utente e avatar
-        const dropdown = document.getElementById('dropdownMenuLink');
-        if (dropdown) {
-            const img = dropdown.querySelector('img#navbar-user-img');
-            if (img && userImg) img.src = userImg;
-            // Sostituisci il testo "Nome Utente" con la mail
-            dropdown.childNodes.forEach(node => {
-                if (node.nodeType === Node.TEXT_NODE && node.textContent.includes('Nome Utente')) {
-                    node.textContent = ' ' + userEmail;
+        document.addEventListener('DOMContentLoaded', function () {
+            // LOGIN: aggiorna navbar se utente loggato
+            const userEmail = localStorage.getItem('loggedUserEmail');
+            const userImg = localStorage.getItem('loggedUserImg');
+            if (userEmail) {
+                // Nascondi il bottone ACCEDI
+                const accediBtn = document.querySelector('a.btn.btn-light[href="log.html"]');
+                if (accediBtn) accediBtn.classList.add('d-none');
+                // Aggiorna nome utente e avatar
+                const dropdown = document.getElementById('dropdownMenuLink');
+                if (dropdown) {
+                    const img = dropdown.querySelector('img#navbar-user-img');
+                    if (img && userImg) img.src = userImg;
+                    // Sostituisci il testo "Nome Utente" con la mail
+                    dropdown.childNodes.forEach(node => {
+                        if (node.nodeType === Node.TEXT_NODE && node.textContent.includes('Nome Utente')) {
+                            node.textContent = ' ' + userEmail;
+                        }
+                    });
                 }
-            });
-        }
-    }
-
-    // LOGOUT: ripristina stato iniziale quando clicchi "Esci" nel dropdown
-    const logoutItem = Array.from(document.querySelectorAll('.dropdown-menu .dropdown-item'))
-        .find(item => item.textContent.trim().toLowerCase() === 'esci');
-    if (logoutItem) {
-        logoutItem.addEventListener('click', function (e) {
-            e.preventDefault();
-            // 1. Mostra di nuovo il bottone ACCEDI
-            const accediBtn = document.querySelector('a.btn.btn-light[href="log.html"]');
-            if (accediBtn) accediBtn.classList.remove('d-none');
-            // 2. Ripristina il nome utente
-            const dropdown = document.getElementById('dropdownMenuLink');
-            if (dropdown) {
-                dropdown.childNodes.forEach(node => {
-                    if (node.nodeType === Node.TEXT_NODE) {
-                        node.textContent = ' Nome Utente';
-                    }
-                });
-                // 3. Ripristina immagine placeholder
-                const img = dropdown.querySelector('img#navbar-user-img');
-                if (img) img.src = 'https://via.placeholder.com/25';
             }
-            // Rimuovi dati dal localStorage
-            localStorage.removeItem('loggedUserEmail');
-            localStorage.removeItem('loggedUserImg');
+
+            // LOGOUT: ripristina stato iniziale quando clicchi "Esci" nel dropdown
+            const logoutItem = Array.from(document.querySelectorAll('.dropdown-menu .dropdown-item'))
+                .find(item => item.textContent.trim().toLowerCase() === 'esci');
+            if (logoutItem) {
+                logoutItem.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // 1. Mostra di nuovo il bottone ACCEDI
+                    const accediBtn = document.querySelector('a.btn.btn-light[href="log.html"]');
+                    if (accediBtn) accediBtn.classList.remove('d-none');
+                    // 2. Ripristina il nome utente
+                    const dropdown = document.getElementById('dropdownMenuLink');
+                    if (dropdown) {
+                        dropdown.childNodes.forEach(node => {
+                            if (node.nodeType === Node.TEXT_NODE) {
+                                node.textContent = ' Nome Utente';
+                            }
+                        });
+                        // 3. Ripristina immagine placeholder
+                        const img = dropdown.querySelector('img#navbar-user-img');
+                        if (img) img.src = 'https://via.placeholder.com/25';
+                    }
+                    // Rimuovi dati dal localStorage
+                    localStorage.removeItem('loggedUserEmail');
+                    localStorage.removeItem('loggedUserImg');
+                });
+            }
         });
-    }
-});
-</script>
+    </script>
 </body>
 
 </html>

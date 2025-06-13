@@ -110,6 +110,46 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    // Funzione per mostrare solo una sezione principale alla volta
+    function showSection(sectionId) {
+        const sectionIds = [
+            'home-section',
+            'search-section',
+            'library-section',
+            'genre-artists-section',
+            'liked-songs-section'
+        ];
+        sectionIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('d-none');
+        });
+        const active = document.getElementById(sectionId);
+        if (active) active.classList.remove('d-none');
+    }
+
+    // Collega i link della sidebar alle sezioni (senza ridefinire le variabili già esistenti)
+    if (homeLink) homeLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showSection('home-section');
+    });
+    if (searchLink) searchLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showSection('search-section');
+    });
+    if (libraryLink) libraryLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showSection('library-section');
+    });
+    // Sidebar: Brani che ti piacciono
+    const likedSongsSidebar = document.querySelector('#sidebar-wrapper .bi-heart-fill')?.closest('a');
+    if (likedSongsSidebar) likedSongsSidebar.addEventListener('click', function(e) {
+        e.preventDefault();
+        showSection('liked-songs-section');
+    });
+    // Esempio: mostra la playlist dettagliata quando serve (da integrare dove serve nel tuo codice)
+    // showSection('genre-artists-section');
+
+
     // --- Funzioni per la gestione del Player Musicale ---
     function updatePlayerInfo(song) {
         if (!song) return; // Fix: non tentare di accedere a proprietà di undefined/null
@@ -602,4 +642,146 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    // --- PLAYLIST MIX DETTAGLIO ---
+    const playlistSection = document.getElementById('genre-artists-section');
+    const playlistCover = document.getElementById('playlist-cover');
+    const playlistTitle = document.getElementById('playlist-title');
+    const playlistDesc = document.getElementById('playlist-desc');
+    const playlistMeta = document.getElementById('playlist-meta');
+    const playlistTracks = document.getElementById('playlist-tracks');
+    const playlistPlayBtn = document.getElementById('playlist-play-btn');
+
+    function getTotalDuration(songs) {
+        let totalSec = songs.reduce((acc, s) => {
+            if (typeof s.duration === 'string' && s.duration.includes(':')) {
+                const [min, sec] = s.duration.split(':').map(Number);
+                return acc + min * 60 + sec;
+            } else if (typeof s.duration === 'number') {
+                return acc + s.duration;
+            }
+            return acc;
+        }, 0);
+        const min = Math.floor(totalSec / 60);
+        const sec = totalSec % 60;
+        return `${min}:${sec.toString().padStart(2, '0')}`;
+    }
+
+    function showMixPlaylist(genre, coverSrc, title) {
+        const songs = allAvailableSongs.filter(song => song.genre && song.genre.toLowerCase() === genre.toLowerCase());
+        if (!songs.length) return;
+        playlistCover.src = coverSrc;
+        playlistTitle.textContent = title;
+        playlistDesc.textContent = `I migliori brani ${genre} selezionati per te.`;
+        playlistMeta.textContent = `Spotify • ${songs.length} brani • ${getTotalDuration(songs)}`;
+        playlistTracks.innerHTML = '';
+        songs.forEach((song, idx) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${idx + 1}</td>
+                <td class="d-flex align-items-center">
+                    <img src="${song.albumArt}" alt="" class="rounded me-2" style="width:40px;height:40px;object-fit:cover;">
+                    <span>${song.title}</span>
+                </td>
+                <td>${song.artist}</td>
+                <td>${song.albumTitle || ''}</td>
+                <td>${song.duration || ''}</td>
+                <td>
+                    <button class="btn btn-link p-0 btn-heart"><i class="bi bi-heart"></i></button>
+                    <button class="btn btn-link text-white p-0"><i class="bi bi-three-dots"></i></button>
+                </td>
+            `;
+            playlistTracks.appendChild(tr);
+        });
+        // Eventi cuore: toggle verde e aggiungi ai preferiti
+        playlistTracks.querySelectorAll('.btn-heart').forEach((btn, i) => {
+            btn.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                const tr = this.closest('tr');
+                icon.classList.toggle('bi-heart-fill');
+                icon.classList.toggle('bi-heart');
+                icon.classList.toggle('text-success');
+                // Se ora è pieno, aggiungi ai preferiti
+                if (icon.classList.contains('bi-heart-fill')) {
+                    const song = songs[i];
+                    if (!likedSongs.some(s => s.id === song.id)) {
+                        likedSongs.push(song);
+                        saveLikedSongs();
+                        renderLikedSongs();
+                    }
+                } else {
+                    // Se viene tolto il cuore, rimuovi dai preferiti
+                    const song = songs[i];
+                    likedSongs = likedSongs.filter(s => s.id !== song.id);
+                    saveLikedSongs();
+                    renderLikedSongs();
+                }
+            });
+        });
+        showSection('genre-artists-section');
+    }
+
+    // Eventi sulle card mix
+    setTimeout(() => {
+        document.querySelectorAll('.genre-mix-card').forEach(card => {
+            card.addEventListener('click', function (e) {
+                e.preventDefault();
+                const genre = this.getAttribute('data-genre');
+                const img = this.querySelector('img');
+                const title = this.querySelector('.card-title').textContent;
+                showMixPlaylist(genre, img.src, title);
+            });
+        });
+    }, 500);
+
+    // --- BRANI PREFERITI ---
+    let likedSongs = JSON.parse(localStorage.getItem('likedSongs') || '[]');
+    const likedSongsSection = document.getElementById('liked-songs-section');
+    const likedSongsList = document.getElementById('liked-songs-list');
+    // Mostra la sezione dei brani preferiti
+    const likedSongsSidebarLink = document.querySelector('#sidebar-wrapper .bi-heart-fill')?.closest('a');
+    if (likedSongsSidebarLink) {
+        likedSongsSidebarLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showSection('liked-songs-section');
+            renderLikedSongs();
+        });
+    }
+    function saveLikedSongs() {
+        localStorage.setItem('likedSongs', JSON.stringify(likedSongs));
+    }
+    function renderLikedSongs() {
+        if (!likedSongsList) return;
+        if (likedSongs.length === 0) {
+            likedSongsList.innerHTML = '<div class="alert alert-info text-dark">Non hai ancora aggiunto nessun brano ai preferiti.</div>';
+            return;
+        }
+        let html = `<table class='table table-dark table-hover playlist-table'><thead><tr><th>#</th><th>Titolo</th><th>Artista</th><th>Album</th><th>Durata</th><th></th></tr></thead><tbody>`;
+        likedSongs.forEach((song, idx) => {
+            html += `<tr><td>${idx+1}</td><td class='d-flex align-items-center'><img src='${song.albumArt}' alt='' class='rounded me-2' style='width:40px;height:40px;object-fit:cover;'><span>${song.title}</span></td><td>${song.artist}</td><td>${song.albumTitle||''}</td><td>${song.duration||''}</td><td><button class='btn btn-link text-success p-0 btn-dislike' data-song-id='${song.id}' title='Rimuovi dai preferiti'><i class='bi bi-heart-fill'></i></button></td></tr>`;
+        });
+        html += '</tbody></table>';
+        likedSongsList.innerHTML = html;
+        // Listener per rimuovere dai preferiti
+        likedSongsList.querySelectorAll('.btn-dislike').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const songId = parseInt(this.dataset.songId);
+                likedSongs = likedSongs.filter(s => s.id !== songId);
+                saveLikedSongs();
+                renderLikedSongs();
+                // Aggiorna anche i cuori nella playlist dettagliata se visibile
+                document.querySelectorAll('#playlist-tracks .btn-heart').forEach(btnHeart => {
+                    const icon = btnHeart.querySelector('i');
+                    const tr = btnHeart.closest('tr');
+                    if (tr && tr.querySelector('span') && tr.querySelector('span').textContent === this.closest('tr').querySelector('span').textContent) {
+                        icon.classList.remove('bi-heart-fill', 'text-success');
+                        icon.classList.add('bi-heart');
+                    }
+                });
+            });
+        });
+    }
+    // All'avvio, renderizza i preferiti se presenti
+    renderLikedSongs();
+
 });

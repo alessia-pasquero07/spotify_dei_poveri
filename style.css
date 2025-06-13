@@ -280,3 +280,51 @@ body {
 #navbar-user-img{
     width: 40px;
 }
+
+/* --- PLAYLIST DETTAGLIO CSS --- */
+#playlist-section {
+  background: linear-gradient(180deg, #222 0%, #181818 100%);
+  min-height: 80vh;
+  border-radius: 16px;
+}
+#playlist-header img {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+#playlist-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+#playlist-desc {
+  color: #b3b3b3;
+}
+#playlist-meta {
+  color: #b3b3b3;
+  font-size: 1rem;
+}
+#playlist-play-btn {
+  background: #1db954;
+  color: #fff;
+  border: none;
+  transition: background 0.2s;
+}
+#playlist-play-btn:hover {
+  background: #1ed760;
+}
+.playlist-table tbody tr:hover {
+  background: #282828;
+}
+.playlist-table td, .playlist-table th {
+  vertical-align: middle;
+}
+.playlist-table img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Cuore vuoto con bordo verde */
+.btn-heart .bi-heart {
+  color: #1ed760; /* verde Spotify per il contorno */
+}
