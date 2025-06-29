@@ -36,7 +36,7 @@ const allAlbums = [
             artist: 'Dua Lipa',
             genre: 'Pop',
             year: 2020,
-            albumArt: 'img/FutureNostalgie.jfif', // Placeholder aggiornato
+            albumArt: 'img/FutureNostalgia.jfif', // Placeholder aggiornato
             songs: [
                 { id: 211, title: 'Don\'t Start Now', duration: '3:03', audioSrc: '' },
                 { id: 212, title: 'Physical', duration: '3:13', audioSrc: '' },
@@ -52,7 +52,7 @@ const allAlbums = [
             artist: 'The Riff Lords',
             genre: 'Rock',
             year: 2021,
-            albumArt: 'https://via.placeholder.com/150/B22222?text=ROCK+A1',
+            albumArt: 'img/RebelYellArchives.jfif', // Placeholder aggiornato
             songs: [
                 { id: 216, title: 'Rebel Yell', duration: '4:20', audioSrc: '' },
                 { id: 217, title: 'Highway Run', duration: '4:55', audioSrc: '' },
@@ -67,7 +67,7 @@ const allAlbums = [
             artist: 'Rammstein',
             genre: 'Rock',
             year: 2001,
-            albumArt: 'https://via.placeholder.com/150/B22222?text=RAMMS+MUTTER',
+            albumArt: 'img/mutter.jfif', // Placeholder aggiornato
             songs: [
                 { id: 221, title: 'Mein Herz brennt', duration: '4:39', audioSrc: '' },
                 { id: 222, title: 'Links 2 3 4', duration: '3:36', audioSrc: '' },
@@ -82,7 +82,7 @@ const allAlbums = [
             artist: 'Rob Zombie',
             genre: 'Rock',
             year: 1998, // Anno aggiornato
-            albumArt: 'https://via.placeholder.com/150/B22222?text=ROBZ+HD', // Placeholder aggiornato
+            albumArt: 'img/Hellbilly Deluxe.jfif', // Placeholder aggiornato
             songs: [
                 { id: 226, title: 'Dragula', duration: '3:42', audioSrc: '' },
                 { id: 227, title: 'Living Dead Girl', duration: '3:21', audioSrc: '' },
@@ -99,7 +99,7 @@ const allAlbums = [
             artist: 'Sfera Ebbasta',
             genre: 'Trap', // Genere aggiornato a Trap
             year: 2018,
-            albumArt: 'https://via.placeholder.com/150/8B008B?text=SFERA+ROCKSTAR', // Placeholder aggiornato
+            albumArt: 'img/Rockstar.jfif', // Placeholder aggiornato
             songs: [
                 { id: 231, title: 'Cupido', duration: '3:05', audioSrc: '' },
                 { id: 232, title: 'Tran Tran', duration: '3:05', audioSrc: '' },
@@ -114,7 +114,7 @@ const allAlbums = [
             artist: 'Tony Effe',
             genre: 'Trap', // Genere aggiornato a Trap
             year: 2024,
-            albumArt: 'https://via.placeholder.com/150/8B008B?text=TONY+ICON', // Placeholder aggiornato
+            albumArt: 'img/Icon.jfif', // Placeholder aggiornato
             songs: [
                 { id: 236, title: 'Boss', duration: '2:50', audioSrc: '' },
                 { id: 237, title: 'Balenciaga', duration: '2:45', audioSrc: '' },
@@ -129,7 +129,7 @@ const allAlbums = [
             artist: 'Capo Plaza',
             genre: 'Trap', // Genere aggiornato a Trap
             year: 2018,
-            albumArt: 'https://via.placeholder.com/150/8B008B?text=PLAZA+20', // Placeholder aggiornato
+            albumArt: 'img/20.jfif', // Placeholder aggiornato
             songs: [
                 { id: 241, title: 'Non Mi Fido', duration: '3:00', audioSrc: '' },
                 { id: 242, title: 'Giovane Fuoriclasse', duration: '3:07', audioSrc: '' },
@@ -328,3 +328,338 @@ const allAlbums = [
             ]
         }
     ];
+
+// --- SETTINGS DATA: struttura delle impostazioni per la sezione Impostazioni ---
+const SETTINGS_DATA = [
+  {
+    categoryName: "Account",
+    icon: "bi-person-circle",
+    description: "Gestisci il tuo profilo, abbonamento e dati personali.",
+    settings: [
+      {
+        id: "accountInfo",
+        type: "link",
+        label: "Informazioni sull'account",
+        value: "Vai alla pagina web",
+        action: "openExternalLink",
+        url: "https://www.spotify.com/account/overview/"
+      },
+      {
+        id: "subscription",
+        type: "link",
+        label: "Piano di abbonamento",
+        value: "Premium Individual",
+        action: "openExternalLink",
+        url: "https://www.spotify.com/premium/"
+      },
+      {
+        id: "changePassword",
+        type: "button",
+        label: "Cambia password",
+        action: "showPasswordChangeForm"
+      }
+    ]
+  },
+  {
+    categoryName: "Qualità audio",
+    icon: "bi-music-note-beamed",
+    description: "Controlla la qualità dello streaming e del download.",
+    settings: [
+      {
+        id: "streamingQualityWifi",
+        type: "dropdown",
+        label: "Qualità dello streaming (Wi-Fi)",
+        currentValue: "Molto alta",
+        options: ["Bassa", "Normale", "Alta", "Molto alta", "Automatica"],
+        action: "setAudioQuality"
+      },
+      {
+        id: "streamingQualityMobile",
+        type: "dropdown",
+        label: "Qualità dello streaming (Dati mobili)",
+        currentValue: "Normale",
+        options: ["Bassa", "Normale", "Alta", "Molto alta", "Automatica"],
+        action: "setAudioQuality"
+      },
+      {
+        id: "normalizeVolume",
+        type: "toggle",
+        label: "Normalizza volume",
+        description: "Imposta lo stesso livello di volume per tutti i brani.",
+        currentValue: true,
+        action: "toggleSetting"
+      }
+    ]
+  },
+  {
+    categoryName: "Riproduzione",
+    icon: "bi-play-circle",
+    description: "Controlla come viene riprodotta la musica.",
+    settings: [
+      {
+        id: "crossfade",
+        type: "slider",
+        label: "Crossfade",
+        description: "Fondi i brani tra loro per eliminare le pause.",
+        currentValue: 0,
+        min: 0,
+        max: 12,
+        step: 1,
+        action: "setCrossfade"
+      },
+      {
+        id: "gaplessPlayback",
+        type: "toggle",
+        label: "Riproduzione senza interruzioni",
+        currentValue: true,
+        action: "toggleSetting"
+      },
+      {
+        id: "autoplay",
+        type: "toggle",
+        label: "Autoplay",
+        description: "Continua a riprodurre musica simile quando finisce la playlist.",
+        currentValue: true,
+        action: "toggleSetting"
+      },
+      {
+        id: "explicitContent",
+        type: "toggle",
+        label: "Contenuti espliciti",
+        description: "Filtra i brani con testi espliciti.",
+        currentValue: false,
+        action: "toggleSetting"
+      }
+    ]
+  },
+  {
+    categoryName: "Dispositivi",
+    icon: "bi-speaker",
+    description: "Gestisci i dispositivi Spotify Connect.",
+    settings: [
+      {
+        id: "connectToDevice",
+        type: "button",
+        label: "Connettiti a un dispositivo",
+        action: "showDeviceList"
+      }
+    ]
+  },
+  {
+    categoryName: "Social",
+    icon: "bi-share",
+    description: "Controlla la visibilità della tua attività.",
+    settings: [
+      {
+        id: "privateSession",
+        type: "toggle",
+        label: "Sessione privata",
+        description: "Non condividere ciò che ascolti su Spotify.",
+        currentValue: false,
+        action: "toggleSetting"
+      },
+      {
+        id: "showOnProfile",
+        type: "toggle",
+        label: "Mostra cosa ascolto sul mio profilo",
+        currentValue: true,
+        action: "toggleSetting"
+      }
+    ]
+  },
+  {
+    categoryName: "Archiviazione",
+    icon: "bi-hdd-fill",
+    description: "Gestisci lo spazio di archiviazione per i brani scaricati.",
+    settings: [
+      {
+        id: "cacheSize",
+        type: "display",
+        label: "Dimensione della cache",
+        value: "250 MB",
+        action: null
+      },
+      {
+        id: "clearCache",
+        type: "button",
+        label: "Svuota cache",
+        action: "confirmClearCache"
+      }
+    ]
+  },
+  {
+    categoryName: "Informazioni",
+    icon: "bi-info-circle",
+    description: "Informazioni sull'app e sulla licenza.",
+    settings: [
+      {
+        id: "appVersion",
+        type: "display",
+        label: "Versione dell'app",
+        value: "1.2.3.456",
+        action: null
+      },
+      {
+        id: "licenses",
+        type: "link",
+        label: "Licenze open source",
+        action: "openExternalLink",
+        url: "https://www.spotify.com/legal/open-source-licenses/"
+      }
+    ]
+  }
+];
+
+// --- PROFILE DATA: struttura del profilo utente per la sezione Profilo ---
+const PROFILE_DATA = {
+  profilePage: {
+    sections: [
+      {
+        id: "header",
+        type: "profileHeader",
+        data: {
+          userAvatarUrl: "https://via.placeholder.com/150/1DB954/FFFFFF?text=USER",
+          userName: "Nome Utente Esempio",
+          userHandle: "@usernameesempio",
+          followersCount: 1234,
+          followingCount: 567,
+          isPremium: true,
+          actionButtons: [
+            {
+              label: "Modifica profilo",
+              icon: "bi-pencil-fill",
+              action: "openEditProfileModal"
+            },
+            {
+              label: "Condividi",
+              icon: "bi-share-fill",
+              action: "shareProfileLink"
+            }
+          ]
+        }
+      },
+      {
+        id: "topArtists",
+        type: "carouselSection",
+        title: "Artisti preferiti",
+        description: "Gli artisti che hai ascoltato di più ultimamente.",
+        displayLimit: 6,
+        data: [
+          {
+            id: "artist1",
+            name: "Rihanna",
+            imageUrl: "https://via.placeholder.com/100/FFD700?text=RIHANNA",
+            type: "artist",
+            action: "navigateToArtistPage"
+          },
+          {
+            id: "artist2",
+            name: "Billie Eilish",
+            imageUrl: "https://via.placeholder.com/100/FFD700?text=BILLIE",
+            type: "artist",
+            action: "navigateToArtistPage"
+          },
+          {
+            id: "artist3",
+            name: "Queen",
+            imageUrl: "https://via.placeholder.com/100/B22222?text=QUEEN",
+            type: "artist",
+            action: "navigateToArtistPage"
+          },
+          {
+            id: "artist4",
+            name: "Sfera Ebbasta",
+            imageUrl: "https://via.placeholder.com/100/8B008B?text=SFERA",
+            type: "artist",
+            action: "navigateToArtistPage"
+          }
+        ],
+        viewAllAction: "showAllTopArtists"
+      },
+      {
+        id: "topSongs",
+        type: "listSection",
+        title: "Brani più ascoltati",
+        description: "Le tue tracce più riprodotte.",
+        displayLimit: 5,
+        data: [
+          {
+            id: "song1",
+            title: "Work",
+            artist: "Rihanna",
+            albumArt: "https://via.placeholder.com/50/FFD700?text=S1",
+            duration: "3:39",
+            action: "playSong"
+          },
+          {
+            id: "song2",
+            title: "Bad Guy",
+            artist: "Billie Eilish",
+            albumArt: "https://via.placeholder.com/50/FFD700?text=S2",
+            duration: "3:14",
+            action: "playSong"
+          },
+          {
+            id: "song3",
+            title: "Bohemian Rhapsody",
+            artist: "Queen",
+            albumArt: "https://via.placeholder.com/50/B22222?text=S3",
+            duration: "5:55",
+            action: "playSong"
+          }
+        ]
+      },
+      {
+        id: "publicPlaylists",
+        type: "gridSection",
+        title: "Playlist pubbliche",
+        description: "Le playlist che hai creato e reso pubbliche.",
+        data: [
+          {
+            id: "playlist1",
+            title: "I Miei Preferiti",
+            coverUrl: "https://via.placeholder.com/150/1DB954?text=P1",
+            description: "Una raccolta dei miei brani preferiti.",
+            type: "playlist",
+            action: "navigateToPlaylist"
+          },
+          {
+            id: "playlist2",
+            title: "Workout Vibes",
+            coverUrl: "https://via.placeholder.com/150/4682B4?text=P2",
+            description: "Musica energica per l'allenamento.",
+            type: "playlist",
+            action: "navigateToPlaylist"
+          }
+        ],
+        createPlaylistAction: "openCreatePlaylistModal"
+      },
+      {
+        id: "following",
+        type: "gridSection",
+        title: "Persone che segui",
+        description: "Profili degli amici e artisti che segui.",
+        data: [
+          {
+            id: "user1",
+            name: "Amico Uno",
+            imageUrl: "https://via.placeholder.com/100/333333/FFFFFF?text=A1",
+            type: "user",
+            action: "navigateToUserProfile"
+          },
+          {
+            id: "user2",
+            name: "Artista XY",
+            imageUrl: "https://via.placeholder.com/100/555555/FFFFFF?text=AX",
+            type: "artist",
+            action: "navigateToArtistPage"
+          }
+        ],
+        viewAllAction: "showAllFollowing"
+      }
+    ]
+  }
+};
+// Rendi SETTINGS_DATA e PROFILE_DATA globali per l'uso in altri file
+window.SETTINGS_DATA = SETTINGS_DATA;
+window.PROFILE_DATA = PROFILE_DATA;

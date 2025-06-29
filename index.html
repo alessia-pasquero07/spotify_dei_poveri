@@ -21,6 +21,7 @@
     <script src="js/musica.js"></script>
     <script src="js/artista.js"></script>
     <script src="js/ricerca.js"></script>
+    <script src="js/settingsStyles.js"></script>
 </head>
 
 <body class="bg-dark text-white">
@@ -366,9 +367,8 @@
                                     </div>
                                     <div class="col">
                                         <div class="card bg-dark text-white border-0 h-100">
-                                            <img src="img/arianaGrande.jpg"
-                                                class="rounded-circle p-2 mx-auto d-block" alt="Artista 13"
-                                                style="width:120px; height:120px; object-fit: cover;">
+                                            <img src="img/arianaGrande.jpg" class="rounded-circle p-2 mx-auto d-block"
+                                                alt="Artista 13" style="width:120px; height:120px; object-fit: cover;">
                                             <div class="card-body p-2">
                                                 <h5 class="card-title mb-0 fs-6">Ariana Grande</h5>
                                                 <p class="card-text text-muted fs-6">Artista</p>
@@ -377,9 +377,8 @@
                                     </div>
                                     <div class="col">
                                         <div class="card bg-dark text-white border-0 h-100">
-                                            <img src="img/elodie.jfif"
-                                                class="rounded-circle p-2 mx-auto d-block" alt="Artista 14"
-                                                style="width:120px; height:120px; object-fit: cover;">
+                                            <img src="img/elodie.jfif" class="rounded-circle p-2 mx-auto d-block"
+                                                alt="Artista 14" style="width:120px; height:120px; object-fit: cover;">
                                             <div class="card-body p-2">
                                                 <h5 class="card-title mb-0 fs-6">Elodie</h5>
                                                 <p class="card-text text-muted fs-6">Artista</p>
@@ -388,9 +387,8 @@
                                     </div>
                                     <div class="col">
                                         <div class="card bg-dark text-white border-0 h-100">
-                                            <img src="img/gue.jfif"
-                                                class="rounded-circle p-2 mx-auto d-block" alt="Artista 15"
-                                                style="width:120px; height:120px; object-fit: cover;">
+                                            <img src="img/gue.jfif" class="rounded-circle p-2 mx-auto d-block"
+                                                alt="Artista 15" style="width:120px; height:120px; object-fit: cover;">
                                             <div class="card-body p-2">
                                                 <h5 class="card-title mb-0 fs-6">Gue Pequegno</h5>
                                                 <p class="card-text text-muted fs-6">Artista</p>
@@ -724,16 +722,43 @@
                     </div>
                 </div>
             </section>
-            
 
-    <!-- Sezione Brani Preferiti -->
-    <section id="liked-songs-section" class="container-fluid d-none p-4">
-        <h2 class="mb-4"><i class="bi bi-heart-fill text-success me-2"></i>Brani che ti piacciono</h2>
-        <div id="liked-songs-list">
-            <div class="alert alert-info text-dark">Non hai ancora aggiunto nessun brano ai preferiti.</div>
-        </div>
-    </section>
-    <!-- Fine sezione Brani Preferiti -->
+
+            <!-- Sezione Brani Preferiti -->
+            <section id="liked-songs-section" class="container-fluid d-none p-4">
+                <h2 class="mb-4"><i class="bi bi-heart-fill text-success me-2"></i>Brani che ti piacciono</h2>
+                <div id="liked-songs-list">
+                    <div class="alert alert-info text-dark">Non hai ancora aggiunto nessun brano ai preferiti.</div>
+                </div>
+            </section>
+            <!-- Fine sezione Brani Preferiti -->
+
+            <!-- Sezione Dettaglio Artista (inizialmente vuota, popolata via JS) -->
+            <section id="artist-detail-section" class="container-fluid d-none p-4">
+                <div id="artist-detail-content" class="bg-dark rounded shadow p-4">
+                    <!-- Qui verranno inseriti dinamicamente i dettagli dell'artista selezionato -->
+                </div>
+            </section>
+
+            <!-- Sezione Impostazioni -->
+            <section id="settings-section" class="container-fluid d-none p-4">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-10 col-lg-8">
+                        <h1 class="mb-4"><i class="bi bi-gear me-2"></i>Impostazioni</h1>
+                        <div id="settings-categories-container"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sezione Profilo Utente -->
+            <section id="profile-section" class="container-fluid d-none p-4">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-10 col-lg-8">
+                        <h1 class="mb-4"><i class="bi bi-person-circle me-2"></i>Profilo</h1>
+                        <div id="profile-content-container"></div>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 
