@@ -1,0 +1,9 @@
+1. gestione del index.html in più file.html per evitare il prolungamento eccessivo della pagina ma mantendo esattamente la struttura attuale
+2. oltre a js,css/bootstrap e html vorrei venisse usato  sql e php per il database (login utenti, canzoni preferire, canzoni totali (ricordo che le canoni devono essere dei link associati a youtube). e altro se serve), inoltre python per il lato backend normalmente ed eventualmente un po di c e c++
+3. menu a tendina e carusel, img, impostazioni, click su carusello, profilo è ancora tutto da migliorare
+4. gestione del progresso della canzone com esu spotify
+5. possibilità di stoppare la canzone e4d evitare che all'avvio ricominci ma riprende da lì
+6. gestione dell impostazioni
+7. possibilità di mettere a sfondo bianco oppure a sfondo nero
+8. inserimento dei fil.html e file.css nelle apostie cartelle ancora da creare
+9. gestione della parte di intelligenza artificale di spotify
