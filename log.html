@@ -95,6 +95,89 @@
 			}
 		});
 	</script>
+	<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- GESTIONE LOGIN ---
+        const loginBtn = document.querySelector('.card-front .btn');
+        const emailInput = document.querySelector('.card-front input[type="email"]');
+        const passwordInput = document.querySelector('.card-front input[type="password"]');
+
+        if (loginBtn) {
+            loginBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const email = emailInput?.value.trim();
+                const password = passwordInput?.value.trim();
+
+                if (!email || !password) {
+                    alert('Inserisci sia email che password!');
+                    return;
+                }
+
+                // Invio i dati a login.php
+                fetch('login.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, password: password })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        // Salvo i dati della sessione nel localStorage per index.html
+                        localStorage.setItem('loggedUserEmail', data.user.email);
+                        localStorage.setItem('loggedUsername', data.user.username);
+                        localStorage.setItem('loggedUserImg', 'https://via.placeholder.com/25');
+                        
+                        // Reindirizzo alla homepage di Spotify Lite
+                        window.location.href = 'index.html';
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(err => console.error("Errore di rete:", err));
+            });
+        }
+
+        // --- GESTIONE REGISTRAZIONE (SIGN UP) ---
+        // Seleziona il blocco sul retro della card (.card-back)
+        const registerBtn = document.querySelector('.card-back .btn');
+        const regNameInput = document.querySelector('.card-back input[placeholder="Your Full Name"]');
+        const regEmailInput = document.querySelector('.card-back input[type="email"]');
+        const regPasswordInput = document.querySelector('.card-back input[type="password"]');
+
+        if (registerBtn) {
+            registerBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const username = regNameInput?.value.trim();
+                const email = regEmailInput?.value.trim();
+                const password = regPasswordInput?.value.trim();
+
+                if (!username || !email || !password) {
+                    alert('Compila tutti i campi per la registrazione!');
+                    return;
+                }
+
+                // Invio i dati a registrazione.php
+                fetch('registrazione.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: username, email: email, password: password })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Registrazione completata! Ora puoi fare il Log In.');
+                        // Simula il click sul checkbox per girare la carta sul fronte (Log In)
+                        const checkbox = document.getElementById('reg-log');
+                        if (checkbox) checkbox.checked = false;
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(err => console.error("Errore di rete:", err));
+            });
+        }
+    });
+</script>
 </body>
 
 </html>

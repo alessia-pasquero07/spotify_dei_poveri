@@ -1,3 +1,48 @@
+// Funzione globale per caricare i brani SQL dal server
+function caricaCanzoniDalDatabase() {
+    fetch('get_canzoni.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Canzoni caricate da SQL:", data.canzoni);
+                
+                // Mappa i dati SQL nel formato che piace alla tua interfaccia grafica!
+                // Creiamo un finto album globale che contiene le canzoni del database
+                const sqlAlbum = {
+                    id: 999,
+                    title: 'Brani dal Database',
+                    artist: 'Vari',
+                    genre: 'SQL',
+                    year: 2026,
+                    albumArt: 'https://via.placeholder.com/150/1DB954/FFFFFF?text=SQL',
+                    songs: data.canzoni.map(c => ({
+                        id: c.id,
+                        title: c.titolo,
+                        artist: c.artista,
+                        duration: formattaSecondi(c.durata), // Converte i secondi (es. 185) in minuti (3:05)
+                        audioSrc: c.url_youtube // Salviamo qui il link di YouTube!
+                    }))
+                };
+
+                // Opzionale: Aggiungi questo album in cima alla tua lista attuale (allAlbums)
+                if (typeof allAlbums !== 'undefined') {
+                    allAlbums.unshift(sqlAlbum); 
+                    // Se hai una funzione nel tuo index.js che renderizza la home (es: renderHome() o inizializzaGriglia())
+                    // richiamala qui per aggiornare la grafica dello schermo!
+                    // esempio: renderizzaInterfaccia(); 
+                }
+            }
+        })
+        .catch(error => console.error("Errore nel fetch delle canzoni:", error));
+}
+
+// Funzione di utilità per trasformare i secondi del DB in formato "mm:ss"
+function formattaSecondi(secondi) {
+    const m = Math.floor(secondi / 60);
+    const s = secondi % 60;
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
     // --- Selezione degli elementi HTML ---
