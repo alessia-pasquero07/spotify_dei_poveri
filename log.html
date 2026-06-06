@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="stryleLog.css">
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
 <body>
@@ -26,14 +27,15 @@
 										<div class="section text-center">
 											<h4 class="mb-4 pb-3">Log In</h4>
 											<div class="form-group">
-												<input type="email" class="form-style" placeholder="Email">
-												<i class="input-icon uil uil-at"></i>
-											</div>
-											<div class="form-group mt-2">
-												<input type="password" class="form-style" placeholder="Password">
-												<i class="input-icon uil uil-lock-alt"></i>
-											</div>
-											<a href="#" class="btn mt-4">Login</a>
+											<input id="login-email" type="email" class="form-style" placeholder="Email" required>
+											<i class="input-icon uil uil-at"></i>
+										</div>
+										<div class="form-group mt-2">
+											<input id="login-password" type="password" class="form-style" placeholder="Password" required>
+											<i class="input-icon uil uil-lock-alt"></i>
+										</div>
+										<div id="login-error" class="text-danger small mt-2" role="alert"></div>
+										<button id="login-btn" type="button" class="btn mt-4">Login</button>
 											<p class="mb-0 mt-4 text-center"><a href="#" class="link">Forgot your
 													password?</a></p>
 										</div>
@@ -44,22 +46,19 @@
 										<div class="section text-center">
 											<h4 class="mb-3 pb-3">Sign Up</h4>
 											<div class="form-group">
-												<input type="text" class="form-style" placeholder="Full Name">
-												<i class="input-icon uil uil-user"></i>
-											</div>
-											<div class="form-group mt-2">
-												<input type="tel" class="form-style" placeholder="Phone Number">
-												<i class="input-icon uil uil-phone"></i>
-											</div>
-											<div class="form-group mt-2">
-												<input type="email" class="form-style" placeholder="Email">
-												<i class="input-icon uil uil-at"></i>
-											</div>
-											<div class="form-group mt-2">
-												<input type="password" class="form-style" placeholder="Password">
-												<i class="input-icon uil uil-lock-alt"></i>
-											</div>
-											<a href="#" class="btn mt-4">Register</a>
+											<input id="register-username" type="text" class="form-style" placeholder="Nome utente" required>
+											<i class="input-icon uil uil-user"></i>
+										</div>
+										<div class="form-group mt-2">
+											<input id="register-email" type="email" class="form-style" placeholder="Email" required>
+											<i class="input-icon uil uil-at"></i>
+										</div>
+										<div class="form-group mt-2">
+											<input id="register-password" type="password" class="form-style" placeholder="Password" required>
+											<i class="input-icon uil uil-lock-alt"></i>
+										</div>
+										<div id="register-error" class="text-danger small mt-2" role="alert"></div>
+										<button id="register-btn" type="button" class="btn mt-4">Register</button>
 										</div>
 									</div>
 								</div>
@@ -71,113 +70,84 @@
 		</div>
 	</div>
 	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			// Trova il bottone Login (assicurati che sia il primo .card-front .btn)
-			const loginBtn = document.querySelector('.card-front .btn');
-			// Trova i campi email e password
-			const emailInput = document.querySelector('.card-front input[type="email"]');
-			const passwordInput = document.querySelector('.card-front input[type="password"]');
-			if (loginBtn) {
-				loginBtn.addEventListener('click', function (e) {
-					e.preventDefault();
-					const email = emailInput?.value.trim();
-					const password = passwordInput?.value.trim();
-					if (!email || !password) {
-						alert('Inserisci sia email che password!');
-						return;
-					}
-					// Salva i dati in localStorage per index.html
-					localStorage.setItem('loggedUserEmail', email);
-					localStorage.setItem('loggedUserImg', 'img/logAccount.jpg');
-					// Vai alla home
-					window.location.href = 'index.html';
-				});
+	$(function () {
+		function showError(target, message) {
+			$(target).text(message).fadeIn();
+		}
+
+		function clearError(target) {
+			$(target).text('').hide();
+		}
+
+		$('#login-btn').on('click', function (e) {
+			e.preventDefault();
+			clearError('#login-error');
+
+			const email = $('#login-email').val().trim();
+			const password = $('#login-password').val();
+
+			if (!email || !password) {
+				showError('#login-error', 'Inserisci email e password.');
+				return;
 			}
+
+			$.ajax({
+				url: 'login.php',
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({ email: email, password: password }),
+				success: function (response) {
+					if (response.success) {
+						localStorage.setItem('loggedUserEmail', response.user.email);
+						localStorage.setItem('loggedUsername', response.user.username);
+						localStorage.setItem('loggedUserImg', 'https://via.placeholder.com/25');
+						window.location.href = 'index.html';
+					} else {
+						showError('#login-error', response.message || 'Utente non trovato, devi registrarti!');
+					}
+				},
+				error: function (xhr) {
+					const response = xhr.responseJSON || {};
+					showError('#login-error', response.message || 'Utente non trovato, devi registrarti!');
+				}
+			});
 		});
+
+		$('#register-btn').on('click', function (e) {
+			e.preventDefault();
+			clearError('#register-error');
+
+			const username = $('#register-username').val().trim();
+			const email = $('#register-email').val().trim();
+			const password = $('#register-password').val();
+
+			if (!username || !email || !password) {
+				showError('#register-error', 'Compila tutti i campi per la registrazione.');
+				return;
+			}
+
+			$.ajax({
+				url: 'registrazione.php',
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({ username: username, email: email, password: password }),
+				success: function (response) {
+					if (response.success) {
+						showError('#register-error', response.message || 'Registrazione completata.');
+						$('#reg-log').prop('checked', false);
+						$('#register-username, #register-email, #register-password').val('');
+					} else {
+						showError('#register-error', response.message || 'Registrazione non riuscita.');
+					}
+				},
+				error: function (xhr) {
+					const response = xhr.responseJSON || {};
+					showError('#register-error', response.message || 'Registrazione non riuscita.');
+				}
+			});
+		});
+	});
 	</script>
-	<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // --- GESTIONE LOGIN ---
-        const loginBtn = document.querySelector('.card-front .btn');
-        const emailInput = document.querySelector('.card-front input[type="email"]');
-        const passwordInput = document.querySelector('.card-front input[type="password"]');
-
-        if (loginBtn) {
-            loginBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                const email = emailInput?.value.trim();
-                const password = passwordInput?.value.trim();
-
-                if (!email || !password) {
-                    alert('Inserisci sia email che password!');
-                    return;
-                }
-
-                // Invio i dati a login.php
-                fetch('login.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email, password: password })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        // Salvo i dati della sessione nel localStorage per index.html
-                        localStorage.setItem('loggedUserEmail', data.user.email);
-                        localStorage.setItem('loggedUsername', data.user.username);
-                        localStorage.setItem('loggedUserImg', 'https://via.placeholder.com/25');
-                        
-                        // Reindirizzo alla homepage di Spotify Lite
-                        window.location.href = 'index.html';
-                    } else {
-                        alert(data.message);
-                    }
-                })
-                .catch(err => console.error("Errore di rete:", err));
-            });
-        }
-
-        // --- GESTIONE REGISTRAZIONE (SIGN UP) ---
-        // Seleziona il blocco sul retro della card (.card-back)
-        const registerBtn = document.querySelector('.card-back .btn');
-        const regNameInput = document.querySelector('.card-back input[placeholder="Your Full Name"]');
-        const regEmailInput = document.querySelector('.card-back input[type="email"]');
-        const regPasswordInput = document.querySelector('.card-back input[type="password"]');
-
-        if (registerBtn) {
-            registerBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                const username = regNameInput?.value.trim();
-                const email = regEmailInput?.value.trim();
-                const password = regPasswordInput?.value.trim();
-
-                if (!username || !email || !password) {
-                    alert('Compila tutti i campi per la registrazione!');
-                    return;
-                }
-
-                // Invio i dati a registrazione.php
-                fetch('registrazione.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: username, email: email, password: password })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Registrazione completata! Ora puoi fare il Log In.');
-                        // Simula il click sul checkbox per girare la carta sul fronte (Log In)
-                        const checkbox = document.getElementById('reg-log');
-                        if (checkbox) checkbox.checked = false;
-                    } else {
-                        alert(data.message);
-                    }
-                })
-                .catch(err => console.error("Errore di rete:", err));
-            });
-        }
-    });
-</script>
 </body>
 
 </html>

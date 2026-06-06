@@ -21,13 +21,12 @@ CREATE TABLE IF NOT EXISTS canzoni (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 4. Crea la tabella dei brani preferiti (relazione utenti <-> canzoni)
+-- 4. Crea la tabella dei film preferiti (relazione utenti <-> film)
 CREATE TABLE IF NOT EXISTS preferiti (
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_utente INT NOT NULL,
-    id_canzone INT NOT NULL,
+    id_film INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_utente) REFERENCES utenti(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_canzone) REFERENCES canzoni(id) ON DELETE CASCADE,
-    UNIQUE(id_utente, id_canzone)
+    UNIQUE(id_utente, id_film)
 );

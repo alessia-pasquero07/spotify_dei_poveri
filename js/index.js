@@ -1,7 +1,10 @@
 // Funzione globale per caricare i brani SQL dal server
 function caricaCanzoniDalDatabase() {
-    fetch('get_canzoni.php')
-        .then(response => response.json())
+    fetch('/esercitazioni/spotify_dei_poveri/get_canzoni.php')
+        .then(response => {
+            if (!response.ok) throw new Error("Errore del server PHP");
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 console.log("Canzoni caricate da SQL:", data.canzoni);
@@ -35,14 +38,16 @@ function caricaCanzoniDalDatabase() {
         })
         .catch(error => console.error("Errore nel fetch delle canzoni:", error));
 }
-
+document.addEventListener('DOMContentLoaded', caricaCanzoniDalDatabase);
 // Funzione di utilità per trasformare i secondi del DB in formato "mm:ss"
 function formattaSecondi(secondi) {
     const m = Math.floor(secondi / 60);
     const s = secondi % 60;
     return `${m}:${s < 10 ? '0' : ''}${s}`;
 }
-
+document.addEventListener("DOMContentLoaded", () => {
+    caricaCanzoniDalDatabase();
+});
 document.addEventListener('DOMContentLoaded', function () {
 
     // --- Selezione degli elementi HTML ---
